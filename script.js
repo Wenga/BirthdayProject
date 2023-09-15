@@ -1,65 +1,165 @@
 
+let camera, scene, renderer;
 
-// Get a reference to the canvas element
-const canvas = document.getElementById('myCanvas');
+let isUserInteracting = false,
+  onPointerDownMouseX = 0, onPointerDownMouseY = 0,
+  lon = 0, onPointerDownLon = 0,
+  lat = 0, onPointerDownLat = 0,
+  phi = 0, theta = 0;
 
-// Create a Three.js renderer and set it to use the canvas element
-const renderer = new THREE.WebGLRenderer({ canvas });
-
-// Set the size of the renderer
-renderer.setSize(window.innerWidth, window.innerHeight);
-
-// Create a scene
-const scene = new THREE.Scene();
-
-// Create a camera
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.z = 0.1; // Set the camera position
-
-// Create a cube geometry
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-
-// Load the textures for each face
-const textureLoader = new THREE.TextureLoader();
-const materialArray = [
-  new THREE.MeshBasicMaterial({ map: textureLoader.load('corgi.jpg'), side: THREE.BackSide }),
-  new THREE.MeshBasicMaterial({ map: textureLoader.load('corgi.jpg'), side: THREE.BackSide }),
-  new THREE.MeshBasicMaterial({ map: textureLoader.load('corgi.jpg'), side: THREE.BackSide }),
-  new THREE.MeshBasicMaterial({ map: textureLoader.load('corgi.jpg'), side: THREE.BackSide }),
-  new THREE.MeshBasicMaterial({ map: textureLoader.load('corgi.jpg'), side: THREE.BackSide }),
-  new THREE.MeshBasicMaterial({ map: textureLoader.load('corgi.jpg'), side: THREE.BackSide })
-];
-
-// Create the skybox material
-const skyboxMaterial = new THREE.MeshFaceMaterial(materialArray);
-
-// Create the skybox mesh
-const skybox = new THREE.Mesh(geometry, skyboxMaterial);
-
-// Add the skybox to the scene
-scene.add(skybox);
-
-// Rotate the camera around its position
-const rotationSpeed = 0.01;
-function animate() {
-    requestAnimationFrame(animate);
-
-    // Rotate the camera
-    camera.rotation.y += rotationSpeed;
-    camera.rotation.z += rotationSpeed;
-
-    renderer.render(scene, camera);
-}
+init();
 animate();
 
-//Handle Resizing
-window.addEventListener('resize', () => {
-    const newWidth = window.innerWidth;
-    const newHeight = window.innerHeight;
-  
-    camera.aspect = newWidth / newHeight;
-    camera.updateProjectionMatrix();
-  
-    renderer.setSize(newWidth, newHeight);
-  });
+function init() {
 
+  const container = document.getElementById( 'container' );
+
+  camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1100 );
+
+  scene = new THREE.Scene();
+
+  const geometry = new THREE.SphereGeometry( 500, 60, 40 );
+  // invert the geometry on the x-axis so that all of the faces point inward
+  geometry.scale( - 1, 1, 1 );
+
+  const texture = new THREE.TextureLoader().load( 'skybox1.png' );
+  texture.colorSpace = THREE.SRGBColorSpace;
+  const material = new THREE.MeshBasicMaterial( { map: texture } );
+
+  const mesh = new THREE.Mesh( geometry, material );
+
+  scene.add( mesh );
+
+  renderer = new THREE.WebGLRenderer();
+  renderer.setPixelRatio( window.devicePixelRatio );
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  container.appendChild( renderer.domElement );
+
+  container.style.touchAction = 'none';
+  container.addEventListener( 'pointerdown', onPointerDown );
+
+  document.addEventListener( 'wheel', onDocumentMouseWheel );
+
+  //
+
+  document.addEventListener( 'dragover', function ( event ) {
+
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'copy';
+
+  } );
+
+  document.addEventListener( 'dragenter', function () {
+
+    document.body.style.opacity = 0.5;
+
+  } );
+
+  document.addEventListener( 'dragleave', function () {
+
+    document.body.style.opacity = 1;
+
+  } );
+
+  document.addEventListener( 'drop', function ( event ) {
+
+    event.preventDefault();
+
+    const reader = new FileReader();
+    reader.addEventListener( 'load', function ( event ) {
+
+      material.map.image.src = event.target.result;
+      material.map.needsUpdate = true;
+
+    } );
+    reader.readAsDataURL( event.dataTransfer.files[ 0 ] );
+
+    document.body.style.opacity = 1;
+
+  } );
+
+  //
+
+  window.addEventListener( 'resize', onWindowResize );
+
+}
+
+function onWindowResize() {
+
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize( window.innerWidth, window.innerHeight );
+
+}
+
+function onPointerDown( event ) {
+
+  if ( event.isPrimary === false ) return;
+
+  isUserInteracting = true;
+
+  onPointerDownMouseX = event.clientX;
+  onPointerDownMouseY = event.clientY;
+
+  onPointerDownLon = lon;
+  onPointerDownLat = lat;
+
+  document.addEventListener( 'pointermove', onPointerMove );
+  document.addEventListener( 'pointerup', onPointerUp );
+
+}
+
+function onPointerMove( event ) {
+
+  if ( event.isPrimary === false ) return;
+
+  lon = ( onPointerDownMouseX - event.clientX ) * 0.1 + onPointerDownLon;
+  lat = ( event.clientY - onPointerDownMouseY ) * 0.1 + onPointerDownLat;
+
+}
+
+function onPointerUp() {
+
+  if ( event.isPrimary === false ) return;
+
+  isUserInteracting = false;
+
+  document.removeEventListener( 'pointermove', onPointerMove );
+  document.removeEventListener( 'pointerup', onPointerUp );
+
+}
+
+function onDocumentMouseWheel( event ) {
+
+  const fov = camera.fov + event.deltaY * 0.05;
+
+  camera.fov = THREE.MathUtils.clamp( fov, 10, 75 );
+
+  camera.updateProjectionMatrix();
+
+}
+
+function animate() {
+  requestAnimationFrame( animate );
+  update();
+}
+
+function update() {
+
+  if ( isUserInteracting === false ) {
+      // do nothing
+  }
+
+  lat = Math.max( - 85, Math.min( 85, lat ) );
+  phi = THREE.MathUtils.degToRad( 90 - lat );
+  theta = THREE.MathUtils.degToRad( lon );
+
+  const x = 500 * Math.sin( phi ) * Math.cos( theta );
+  const y = 500 * Math.cos( phi );
+  const z = 500 * Math.sin( phi ) * Math.sin( theta );
+
+  camera.lookAt( x, y, z );
+
+  renderer.render( scene, camera );
+}
