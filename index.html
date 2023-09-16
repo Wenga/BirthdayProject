@@ -2,10 +2,46 @@
 <html>
  <head>
     <title>Three.js Canvas</title>
+
+    <style>
+        /* Add some basic styling */
+
+        #PreviousButton {
+            position: absolute; 
+            top: 50vh;
+            left: 5vw;
+            z-index: 1;
+            background-color: #eba0e6;
+            height: 5em;
+            width: 10em;
+            transform-origin: top left; 
+            transform: translate(0, -50%); 
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #NextButton {
+            position: absolute; 
+            top: 50vh;
+            right: 5vw;
+            z-index: 1;
+            background-color: #eba0e6;
+            height: 5em;
+            width: 10em;
+            transform-origin: top left; 
+            transform: translate(0, -50%); 
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <div id="container" style="touch-action: none;">
+        <button id="PreviousButton">Previous</button>
+        <button id="NextButton">Next</button>
     </div>
     <script src="script.js"></script>
 </body>
