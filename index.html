@@ -1,50 +1,79 @@
 <!DOCTYPE html>
 <html>
  <head>
-    <title>Birthday Worlds</title>
+    <title>WhatIsBirthday</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mooli&display=swap" rel="stylesheet">
 
     <style>
-        /* Add some basic styling */
-
-        #PreviousButton {
-            position: absolute; 
-            top: 50vh;
-            left: 5vw;
-            z-index: 1;
-            background-color: #eba0e6;
-            height: 5em;
-            width: 10em;
-            transform-origin: top left; 
-            transform: translate(0, -50%); 
-            font-size: 1em;
-            color: white;
-            border: none;
-            cursor: pointer;
+        body {
+            background: linear-gradient(to bottom, #262525, #eae2e2);
+            font-family: 'Mooli', sans-serif;
         }
 
-        #NextButton {
-            position: absolute; 
-            top: 50vh;
-            right: 5vw;
-            z-index: 1;
-            background-color: #eba0e6;
-            height: 5em;
-            width: 10em;
-            transform-origin: top left; 
-            transform: translate(0, -50%); 
+        .center-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 10%;
+        }
+
+        .h1 {
+            color: rgb(255, 255, 255);
+            font-size: 8em;
+            text-align: center;
+        }
+
+        p{
+            max-width: 60vw;
+        }
+
+        input[type="text"] {
+            width: 30vw; 
+            height: 3em; 
+            border-style: dashed;
+            border-width: 1px; 
+            border-color: rgb(0, 0, 0); 
+            border-radius: 10px;
+            padding: 10px;
+            color: rgb(255, 255, 255); 
+            text-align: center;
+            background-color: rgba(11, 11, 11, 0.1); 
+            font-style: italic;
             font-size: 1em;
-            color: white;
+        }
+
+        input[type="text"]::placeholder {
+            color: rgb(0, 0, 0); 
+            text-align: center;
+            font-style: italic;
+            font-size: 1em;
+        }
+
+        #enterButton{
+            margin: 20px;
+            background: none;
             border: none;
+            font-size: 1.5em;
+            color:rgb(255, 255, 255)
+        }
+
+        button:hover{
             cursor: pointer;
         }
     </style>
+
 </head>
+
 <body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <div id="container" style="touch-action: none;">
-        <button id="PreviousButton">Previous</button>
-        <button id="NextButton">Next</button>
+    <div class="center-container">
+        <p class="h1">WHAT IF BIRTHDAY MEMORIES CAN BE FELT?</p>
+        <input type="text" id="password" name="name" placeholder="Spell the magic...">
+        <a href="birthdayWorlds.html">
+            <button id="enterButton">Reveal</button>
+        </a>
     </div>
-    <script src="script.js"></script>
 </body>
 </html>
