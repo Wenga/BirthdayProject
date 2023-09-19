@@ -6,11 +6,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mooli&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.scss">
 
     <style>
-        body {
-            background: linear-gradient(to bottom, #262525, #eae2e2);
-            font-family: 'Mooli', sans-serif;
+
+        body{
+	    margin:0;
+	    padding:0;
+	    background: linear-gradient(to bottom, #262525, #eae2e2);
+	    background-size: cover;        
+        font-family: 'Mooli', sans-serif;
         }
 
         .center-container {
@@ -35,18 +40,18 @@
             height: 3em; 
             border-style: dashed;
             border-width: 1px; 
-            border-color: rgb(0, 0, 0); 
+            border-color: rgb(255, 255, 255); 
             border-radius: 10px;
             padding: 10px;
             color: rgb(255, 255, 255); 
             text-align: center;
-            background-color: rgba(11, 11, 11, 0.1); 
+            background: none; 
             font-style: italic;
             font-size: 1em;
         }
 
         input[type="text"]::placeholder {
-            color: rgb(0, 0, 0); 
+            color: rgb(255, 255, 255); 
             text-align: center;
             font-style: italic;
             font-size: 1em;
@@ -63,11 +68,18 @@
         button:hover{
             cursor: pointer;
         }
+
+        canvas{
+            position: absolute;
+            z-index: -1;
+            filter: blur(10px)
+        }
     </style>
 
 </head>
 
 <body>
+    <canvas id="canvas"></canvas>
     <div class="center-container">
         <p class="h1">WHAT IF BIRTHDAY MEMORIES CAN BE FELT?</p>
         <input type="text" id="password" name="name" placeholder="Spell the magic...">
@@ -75,5 +87,93 @@
             <button id="enterButton">Reveal</button>
         </a>
     </div>
+    
+    <script>
+        var canvas = document.getElementById('canvas');
+        console.log(canvas)
+        var ctx = canvas.getContext('2d');
+        canvas.width = innerWidth;
+        canvas.height = innerHeight;
+
+        var maxRadius =  200;
+        var minRadius = 100;
+
+        var colors = ['rgba(190,190,190,.55)','rgba(100,100,100,.5)','rgba(255,255,255,.25)','rgba(50,50,50,.5)'];
+        var blurs = ['5px','10px','2px','0px','0px','5px'];
+
+        window.addEventListener('resize',function(){
+        canvas.width = innerWidth;
+        canvas.height = innerHeight;
+
+        init();
+        });
+
+        function Circle(x, y, dx, dy, radius) {
+        this.x = x;
+        this.y = y;
+        this.dx = dx;
+        this.dy = dy;
+        this.radius = radius;
+        this.color = colors[Math.floor(Math.random() * colors.length)];  
+
+        this.draw = function(){
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2, false);
+            ctx.lineWidth = "2";
+            ctx.fillStyle = this.color;
+            ctx.fill();
+        }
+
+        this.update = function(){
+
+            if (this.x + this.radius > innerWidth || this.x - this.radius < 0) {
+            this.dx = -this.dx;
+            }
+
+            if (this.y + this.radius > innerHeight || this.y - this.radius < 0) {
+            this.dy = -this.dy;
+            }
+
+            this.x += this.dx*1;
+            this.y += this.dy*1;
+
+            this.draw();
+
+        }
+
+        }
+
+        var circleArray = [];
+
+        function init() {
+
+        circleArray = [];
+
+        for (var i = 0; i < 20; i++) {
+
+            var radius = Math.random()*100 + 1;
+            var x   = Math.random() * (innerWidth - radius*2) + radius;
+            var y   = Math.random() * (innerHeight - radius*2) + radius;
+            var dx  = (Math.random() - .5);
+            var dy  = (Math.random() - .5);
+
+            circleArray.push(new Circle(x, y, dx, dy, radius));
+
+        }
+        }
+
+        function animate(){
+        requestAnimationFrame(animate);
+        ctx.clearRect(0, 0, innerWidth, innerHeight);
+
+        for (var i = 0; i < circleArray.length; i++) {
+            circleArray[i].update();
+        };
+
+        }
+        animate();
+        init();
+
+    </script>
 </body>
 </html>
