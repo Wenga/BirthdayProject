@@ -187,18 +187,18 @@ function montionOn()
   if (storedOrientation.initialzed)
   {
     console.log("motion on");
-    window.addEventListener('devicemotion', onDeviceOrientationChanged);
+    window.addEventListener('deviceorientation', onDeviceOrientationChanged);
     return;
   }
 
-  if (typeof DeviceMotionEvent.requestPermission === 'function') {
+  if (typeof DeviceOrientationEvent.requestPermission === 'function') {
     // Handle iOS 13+ devices.
-    DeviceMotionEvent.requestPermission()
+    DeviceOrientationEvent.requestPermission()
       .then((state) => {
         console.log(state)
         if (state === 'granted') {
           storedOrientation.initialzed = true;
-          window.addEventListener('devicemotion', onDeviceOrientationChanged);
+          window.addEventListener('deviceorientation', onDeviceOrientationChanged);
         } else {
           console.error('Request to access the orientation was rejected');
         }
@@ -207,14 +207,14 @@ function montionOn()
   } else {
     // Handle regular non iOS 13+ devices.
     storedOrientation.initialzed = true;
-    window.addEventListener('devicemotion', onDeviceOrientationChanged);
+    window.addEventListener('deviceorientation', onDeviceOrientationChanged);
   }
 }
 
 function motionOff()
 {
   console.log("motion off");
-  window.removeEventListener('devicemotion', onDeviceOrientationChanged);
+  window.removeEventListener('deviceorientation', onDeviceOrientationChanged);
 }
 
 function onDeviceOrientationChanged( event )
