@@ -9,7 +9,13 @@ let isUserInteracting = false,
 
 const skyboxList = ['skybox1.png','skybox2.png']; 
 let skyIndex = 0;
-let storedOrientation  = {alpha : 0, beta : 0, gamma : 0, initialzed : false};
+let storedOrientation  = {
+  alpha : 0, 
+  beta : 0, 
+  gamma : 0, 
+  initialzed : false, 
+  needUpdate : false
+};
 
 
 init();
@@ -108,24 +114,14 @@ function init() {
     }
   });
 
-  if (typeof DeviceMotionEvent.requestPermission === 'function') {
-    // Handle iOS 13+ devices.
-    DeviceMotionEvent.requestPermission()
-      .then((state) => {
-        console.log(state)
-        if (state === 'granted') {
-          storedOrientation.initialzed = true;
-          window.addEventListener('devicemotion', onDeviceOrientationChanged);
-        } else {
-          console.error('Request to access the orientation was rejected');
-        }
-      })
-      .catch(console.error);
-  } else {
-    // Handle regular non iOS 13+ devices.
-    storedOrientation.initialzed = true;
-    window.addEventListener('devicemotion', onDeviceOrientationChanged);
-  }
+  const toggleMotion = document.getElementById("toggle-motion");
+  console.log(toggleMotion)
+  toggleMotion.addEventListener('change', function(){
+    if(this.checked)
+      montionOn();
+    else
+      motionOff();
+  });
 
 }
 
@@ -185,12 +181,48 @@ function onDocumentMouseWheel( event ) {
 
 }
 
+function montionOn()
+{
+  if (storedOrientation.initialzed)
+  {
+    window.addEventListener('devicemotion', onDeviceOrientationChanged);
+    return;
+  }
+
+  if (typeof DeviceMotionEvent.requestPermission === 'function') {
+    // Handle iOS 13+ devices.
+    DeviceMotionEvent.requestPermission()
+      .then((state) => {
+        console.log(state)
+        if (state === 'granted') {
+          storedOrientation.initialzed = true;
+          window.addEventListener('devicemotion', onDeviceOrientationChanged);
+        } else {
+          console.error('Request to access the orientation was rejected');
+        }
+      })
+      .catch(console.error);
+  } else {
+    // Handle regular non iOS 13+ devices.
+    storedOrientation.initialzed = true;
+    window.addEventListener('devicemotion', onDeviceOrientationChanged);
+  }
+}
+
+function motionOff()
+{
+  window.removeEventListener('devicemotion', onDeviceOrientationChanged);
+}
+
 function onDeviceOrientationChanged( event )
 {
+  storedOrientation.needUpdate = event.alpha != storedOrientation.alpha 
+                  ||storedOrientation.beta != event.beta 
+                  ||storedOrientation.gamma != event.gamma;
   storedOrientation.alpha = event.alpha;
   storedOrientation.beta = event.beta;
   storedOrientation.gamma = event.gamma;
-  document.getElementById("PreviousButton").innerText = alpha.toString() + ',';
+  document.getElementById("PreviousButton").innerText = storedOrientation.alpha.toString() + ',';
 }
 
 function animate() {
@@ -200,11 +232,12 @@ function animate() {
 
 function update() {
 
-  if ( isUserInteracting === false && storedOrientation.initialzed) {
+  if ( isUserInteracting === false && storedOrientation.needUpdate) {
       camera.rotation.order = "YXZ";
       camera.rotation.x = storedOrientation.alpha;
       camera.rotation.y = storedOrientation.beta;
       camera.rotation.z = storedOrientation.gamma;
+      storedOrientation.needUpdate = false;
   }
   else {
     lat = Math.max( - 85, Math.min( 85, lat ) );
