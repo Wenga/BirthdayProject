@@ -5,8 +5,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mooli&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.scss">
+    <link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap" rel="stylesheet">
 
     <style>
 
@@ -14,15 +13,16 @@
 	    margin:0;
 	    padding:0;
 	    background: linear-gradient(to bottom, #262525, #eae2e2);
-	    background-size: cover;        
-        font-family: 'Mooli', sans-serif;
+	    background-size:cover;        
+        font-family: 'Cutive Mono', monospace;
         }
 
         .center-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-bottom: 10%;
+            padding-bottom: 5vh;
+            height: 100vh;
         }
 
         .h1 {
@@ -32,6 +32,8 @@
         }
 
         p{
+            margin: 0;
+            padding: 100px;
             max-width: 60vw;
         }
 
@@ -41,12 +43,12 @@
             border-style: dashed;
             border-width: 1px; 
             border-color: rgb(255, 255, 255); 
-            border-radius: 10px;
+            border-radius: 5px;
             padding: 10px;
             color: rgb(255, 255, 255); 
             text-align: center;
             background: none; 
-            font-style: italic;
+            font-family: 'Cutive Mono', monospace;
             font-size: 1em;
         }
 
@@ -54,25 +56,35 @@
             color: rgb(255, 255, 255); 
             text-align: center;
             font-style: italic;
+            font-family:Arial, Helvetica, sans-serif;
             font-size: 1em;
         }
 
-        #enterButton{
+        input[type="text"]:focus {
+        outline: none; 
+        }
+
+
+        .enterButton{
             margin: 20px;
-            background: none;
+            background-color:transparent;
+            transition: background-color 0.3s;
             border: none;
+            font-family: 'Cutive Mono', monospace;
             font-size: 1.5em;
             color:rgb(255, 255, 255)
         }
 
-        button:hover{
+        .enterButton:hover{
             cursor: pointer;
+            background-color: #000;
+            border-radius: 3px;
         }
 
         canvas{
             position: absolute;
             z-index: -1;
-            filter: blur(10px)
+            filter: blur(10px);
         }
     </style>
 
@@ -84,26 +96,24 @@
         <p class="h1">WHAT IF BIRTHDAY MEMORIES CAN BE FELT?</p>
         <input type="text" id="password" name="name" placeholder="Spell the magic...">
         <a href="birthdayWorlds.html">
-            <button id="enterButton">Reveal</button>
+            <button class="enterButton">Reveal</button>
         </a>
     </div>
     
     <script>
         var canvas = document.getElementById('canvas');
-        console.log(canvas)
-        var ctx = canvas.getContext('2d');
-        canvas.width = innerWidth;
-        canvas.height = innerHeight;
+        var container = document.querySelector('.center-container');
 
-        var maxRadius =  200;
-        var minRadius = 100;
+        var ctx = canvas.getContext('2d');
+        canvas.width = container.clientWidth;
+        canvas.height = container.clientHeight;
 
         var colors = ['rgba(190,190,190,.55)','rgba(100,100,100,.5)','rgba(255,255,255,.25)','rgba(50,50,50,.5)'];
         var blurs = ['5px','10px','2px','0px','0px','5px'];
 
         window.addEventListener('resize',function(){
-        canvas.width = innerWidth;
-        canvas.height = innerHeight;
+        canvas.width = container.clientWidth;
+        canvas.height = container.clientHeight;
 
         init();
         });
