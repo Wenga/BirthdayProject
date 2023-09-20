@@ -103,6 +103,7 @@ function init() {
       material.map = new THREE.TextureLoader().load( skyboxList[skyIndex]);
       material.needsUpdate = true;
     }
+    montionOn();
   });
 
   nextButton.addEventListener('click', function(){
