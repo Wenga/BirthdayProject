@@ -10,11 +10,12 @@
     <style>
 
         body{
-	    margin:0;
-	    padding:0;
-	    background: linear-gradient(to bottom, #262525, #eae2e2);
-	    background-size:cover;        
-        font-family: 'Cutive Mono', monospace;
+            margin:0;
+            padding:0;
+            background: linear-gradient(to bottom, #262525, #eae2e2);
+            background-size:cover;        
+            font-family: 'Cutive Mono', monospace;
+            height: cover
         }
 
         .center-container {
@@ -29,41 +30,43 @@
             color: rgb(255, 255, 255);
             font-size: 8em;
             text-align: center;
+            padding: 5vh;
         }
 
         p{
             margin: 0;
-            padding: 100px;
+            padding: 0;
             max-width: 60vw;
         }
 
         input[type="text"] {
             width: 30vw; 
-            height: 3em; 
-            border-style: dashed;
-            border-width: 1px; 
-            border-color: rgb(255, 255, 255); 
+            height: 2em;
+            border-style:dotted;
+            border-width: 2px; 
+            border-color: rgba(255, 255, 255,.5); 
             border-radius: 5px;
             padding: 10px;
             color: rgb(255, 255, 255); 
             text-align: center;
             background: none; 
             font-family: 'Cutive Mono', monospace;
-            font-size: 1em;
+            font-size: 1.2em;
         }
 
         input[type="text"]::placeholder {
             color: rgb(255, 255, 255); 
             text-align: center;
             font-style: italic;
-            font-family:Arial, Helvetica, sans-serif;
-            font-size: 1em;
         }
 
         input[type="text"]:focus {
-        outline: none; 
+            outline: none; 
         }
 
+        input[type="text"]:focus::placeholder {
+            color: transparent;
+        }
 
         .enterButton{
             margin: 20px;
@@ -80,6 +83,7 @@
             background-color: #000;
             border-radius: 3px;
         }
+
 
         canvas{
             position: absolute;
