@@ -186,6 +186,7 @@ function montionOn()
 {
   if (storedOrientation.initialzed)
   {
+    console.log("motion on");
     window.addEventListener('devicemotion', onDeviceOrientationChanged);
     return;
   }
@@ -212,6 +213,7 @@ function montionOn()
 
 function motionOff()
 {
+  console.log("motion off");
   window.removeEventListener('devicemotion', onDeviceOrientationChanged);
 }
 
