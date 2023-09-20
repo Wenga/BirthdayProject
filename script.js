@@ -9,6 +9,7 @@ let isUserInteracting = false,
 
 const skyboxList = ['skybox1.png','skybox2.png']; 
 let skyIndex = 0;
+let storedOrientation  = {alpha : 0, beta : 0, gamma : 0, initialzed : false};
 
 
 init();
@@ -107,6 +108,25 @@ function init() {
     }
   });
 
+  if (typeof DeviceMotionEvent.requestPermission === 'function') {
+    // Handle iOS 13+ devices.
+    DeviceMotionEvent.requestPermission()
+      .then((state) => {
+        console.log(state)
+        if (state === 'granted') {
+          storedOrientation.initialzed = true;
+          window.addEventListener('devicemotion', onDeviceOrientationChanged);
+        } else {
+          console.error('Request to access the orientation was rejected');
+        }
+      })
+      .catch(console.error);
+  } else {
+    // Handle regular non iOS 13+ devices.
+    storedOrientation.initialzed = true;
+    window.addEventListener('devicemotion', onDeviceOrientationChanged);
+  }
+
 }
 
 function onWindowResize() {
@@ -144,7 +164,7 @@ function onPointerMove( event ) {
 
 }
 
-function onPointerUp() {
+function onPointerUp( event ) {
 
   if ( event.isPrimary === false ) return;
 
@@ -165,6 +185,14 @@ function onDocumentMouseWheel( event ) {
 
 }
 
+function onDeviceOrientationChanged( event )
+{
+  storedOrientation.alpha = event.alpha;
+  storedOrientation.beta = event.beta;
+  storedOrientation.gamma = event.gamma;
+  document.getElementById("PreviousButton").innerText = alpha.toString() + ',';
+}
+
 function animate() {
   requestAnimationFrame( animate );
   update();
@@ -172,19 +200,24 @@ function animate() {
 
 function update() {
 
-  if ( isUserInteracting === false ) {
-      // do nothing
+  if ( isUserInteracting === false && storedOrientation.initialzed) {
+      camera.rotation.order = "YXZ";
+      camera.rotation.x = storedOrientation.alpha;
+      camera.rotation.y = storedOrientation.beta;
+      camera.rotation.z = storedOrientation.gamma;
   }
+  else {
+    lat = Math.max( - 85, Math.min( 85, lat ) );
+    phi = THREE.MathUtils.degToRad( 90 - lat );
+    theta = THREE.MathUtils.degToRad( lon );
 
-  lat = Math.max( - 85, Math.min( 85, lat ) );
-  phi = THREE.MathUtils.degToRad( 90 - lat );
-  theta = THREE.MathUtils.degToRad( lon );
+    const x = 500 * Math.sin( phi ) * Math.cos( theta );
+    const y = 500 * Math.cos( phi );
+    const z = 500 * Math.sin( phi ) * Math.sin( theta );
 
-  const x = 500 * Math.sin( phi ) * Math.cos( theta );
-  const y = 500 * Math.cos( phi );
-  const z = 500 * Math.sin( phi ) * Math.sin( theta );
-
-  camera.lookAt( x, y, z );
+    camera.lookAt( x, y, z );
+  }
+  
 
   renderer.render( scene, camera );
 }
