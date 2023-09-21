@@ -3,17 +3,17 @@ var container = document.getElementById("selector-container");
 
 // Create a select element
 var selectElement = document.createElement("select");
-selectElement.id = "programmingLanguages";
-selectElement.name = "programmingLanguages";
+selectElement.id = "worldNumber";
+selectElement.name = "worldNumber";
 
-// Array of programming languages
-var languages = ["JavaScript", "Python", "Java", "C#", "Ruby", "PHP"];
+// Array 
+var number = ["1", "2", "3", "4", "5", "6"];
 
-// Create an option for each programming language and add it to the select element
-languages.forEach(function (language) {
+// Create an option for each number and add it to the select element
+number.forEach(function (number) {
     var option = document.createElement("option");
-    option.value = language.toLowerCase();
-    option.textContent = language;
+    option.value = number.toLowerCase();
+    option.textContent = number;
     selectElement.appendChild(option);
 });
 
