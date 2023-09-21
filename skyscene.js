@@ -121,16 +121,17 @@ function init() {
 
 }
 
-function onWindowResize() {
+function onWindowResize() 
+{
 
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
-
   renderer.setSize( window.innerWidth, window.innerHeight );
 
 }
 
-function onPointerDown( event ) {
+function onPointerDown( event ) 
+{
 
   if ( event.isPrimary === false ) return;
 
@@ -147,7 +148,8 @@ function onPointerDown( event ) {
 
 }
 
-function onPointerMove( event ) {
+function onPointerMove( event ) 
+{
 
   if ( event.isPrimary === false ) return;
 
@@ -156,7 +158,8 @@ function onPointerMove( event ) {
 
 }
 
-function onPointerUp( event ) {
+function onPointerUp( event ) 
+{
 
   if ( event.isPrimary === false ) return;
 
@@ -164,17 +167,13 @@ function onPointerUp( event ) {
 
   document.removeEventListener( 'pointermove', onPointerMove );
   document.removeEventListener( 'pointerup', onPointerUp );
-
 }
 
-function onDocumentMouseWheel( event ) {
-
+function onDocumentMouseWheel( event ) 
+{
   const fov = camera.fov + event.deltaY * 0.05;
-
   camera.fov = THREE.MathUtils.clamp( fov, 10, 75 );
-
   camera.updateProjectionMatrix();
-
 }
 
 function promptGrant()
@@ -218,17 +217,20 @@ function motionOff()
   deviceOrientationControl.disconnect();
 }
 
-function animate() {
+function animate() 
+{
   requestAnimationFrame( animate );
   update();
 }
 
 function update() {
 
-  if ( isUserInteracting === false && storedOrientation.initialzed) {
+  if ( isUserInteracting === false && storedOrientation.initialzed) 
+  {
       deviceOrientationControl.update();
   }
-  else {
+  else 
+  {
     lat = Math.max( - 85, Math.min( 85, lat ) );
     phi = THREE.MathUtils.degToRad( 90 - lat );
     theta = THREE.MathUtils.degToRad( lon );
@@ -239,7 +241,5 @@ function update() {
 
     camera.lookAt( x, y, z );
   }
-  
-
   renderer.render( scene, camera );
 }
