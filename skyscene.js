@@ -188,8 +188,9 @@ function promptGrant()
       .then((state) => {
         console.log(state)
         if (state === 'granted') {
-          storedOrientation.initialzed = true;
           deviceOrientationControl = new DeviceOrientationControls(camera);
+          storedOrientation.initialzed = true;
+          motionOn();
         } else {
           console.error('Request to access the orientation was rejected');
         }
@@ -198,6 +199,8 @@ function promptGrant()
   } else {
     // Handle regular non iOS 13+ devices.
     deviceOrientationControl = new DeviceOrientationControls(camera);
+    storedOrientation.initialzed = true;
+    motionOn();
   }
 }
 
