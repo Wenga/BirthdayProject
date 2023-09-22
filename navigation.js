@@ -11,7 +11,7 @@ selectElement.name = "worldNumber";
 selectElement.style.appearance = "none";
 selectElement.style.backgroundColor = "transparent"; 
 selectElement.style.color = "white"; 
-selectElement.style.border = "1px dashed white";
+selectElement.style.border = "0.5px solid white";
 selectElement.style.borderRadius="2"; 
 selectElement.style.paddingLeft = "20px"; 
 selectElement.style.paddingRight = "20px";
@@ -19,8 +19,9 @@ selectElement.style.paddingTop = "3px";
 selectElement.style.paddingBottom = "3px"; 
 selectElement.style.fontFamily = "'Cutive Mono', monospace";
 selectElement.style.fontSize = "1.25em"
+selectElement.style.textShadow = "1px 1px 6px rgba(0, 0, 0, 0.3)";
 selectElement.style.outline = "none"; 
-
+selectElement.style.boxShadow = "inset 0px 0px 5px rgba(0, 0, 0, 0.1)";
 
 // Array 
 var number = ["1", "2", "3", "4", "5", "6"];
@@ -37,10 +38,11 @@ number.forEach(function (number) {
 var textElement = document.createElement("span");
 textElement.textContent = "/ 30";
 
-// Apply padding to the text element
+// Apply style to the text element
 textElement.style.paddingLeft = "10px"; 
 textElement.style.fontFamily = "'Cutive Mono', monospace";
 textElement.style.fontSize = "1.25em";
+textElement.style.textShadow = "1px 1px 10px rgba(0, 0, 0, 0.3)";
 
 // Append the select and text elements to the container
 container.appendChild(selectElement);
