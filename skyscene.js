@@ -92,10 +92,12 @@ function init() {
   const previousButton = document.getElementById('PreviousButton');
   const nextButton = document.getElementById('NextButton');
 
+  // === move those following bock to navigation and make it change selections ===
+  // I will listen to selection change and load the relative skybox.
   previousButton.addEventListener('click', function() {
     if (skyIndex > 0 )
     {
-      --skyIndex;
+      --skyIndeex;
       material.map = new THREE.TextureLoader().load( skyboxList[skyIndex]);
       material.needsUpdate = true;
     }
@@ -109,6 +111,7 @@ function init() {
       material.needsUpdate = true;
     }
   });
+  // ============================================================================
 
   const toggleMotion = document.getElementById("toggle-motion");
   toggleMotion.addEventListener('click', promptGrant);
