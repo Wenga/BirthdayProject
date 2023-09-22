@@ -48,7 +48,7 @@ TextDisplay3D = function() {
             size: 16,
             height: 2,
             curveSegments: 12,
-            bevelEnabled: falses,
+            bevelEnabled: false,
             bevelThickness: 1,
             bevelSize:0,
             bevelOffset: 0,
