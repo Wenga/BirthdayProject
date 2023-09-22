@@ -1,5 +1,6 @@
 let camera, scene, renderer;
 let deviceOrientationControl;
+let textDisplay3D;
 
 let isUserInteracting = false,
   onPointerDownMouseX = 0, onPointerDownMouseY = 0,
@@ -25,29 +26,21 @@ function init() {
 
   scene = new THREE.Scene();
 
-  const geometry = new THREE.SphereGeometry( 500, 60, 40 );
-  // invert the geometry on the x-axis so that all of the faces point inward
-  geometry.scale( - 1, 1, 1 );
-
-  const texture = new THREE.TextureLoader().load( skyboxList[skyIndex]);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  const material = new THREE.MeshBasicMaterial( { map: texture } );
-
-  const mesh = new THREE.Mesh( geometry, material );
-
-  scene.add( mesh );
+  textDisplay3D = new TextDisplay3D();
+  textDisplay3D.init(scene);
+  textDisplay3D.updateText("Test");
 
   renderer = new THREE.WebGLRenderer();
   renderer.setPixelRatio( window.devicePixelRatio );
   renderer.setSize( window.innerWidth, window.innerHeight );
+
+  loadTexture();
   container.appendChild( renderer.domElement );
 
   container.style.touchAction = 'none';
   container.addEventListener( 'pointerdown', onPointerDown );
 
   document.addEventListener( 'wheel', onDocumentMouseWheel );
-
-  //
 
   document.addEventListener( 'dragover', function ( event ) {
 
@@ -68,36 +61,18 @@ function init() {
 
   } );
 
-  document.addEventListener( 'drop', function ( event ) {
-
-    event.preventDefault();
-
-    const reader = new FileReader();
-    reader.addEventListener( 'load', function ( event ) {
-
-      material.map.image.src = event.target.result;
-      material.map.needsUpdate = true;
-
-    } );
-    reader.readAsDataURL( event.dataTransfer.files[ 0 ] );
-
-    document.body.style.opacity = 1;
-
-  } );
-
-  //
-
   window.addEventListener( 'resize', onWindowResize );
 
   const previousButton = document.getElementById('PreviousButton');
   const nextButton = document.getElementById('NextButton');
 
+  // === move those following bock to navigation and make it change selections ===
+  // I will listen to selection change and load the relative skybox.
   previousButton.addEventListener('click', function() {
     if (skyIndex > 0 )
     {
       --skyIndex;
-      material.map = new THREE.TextureLoader().load( skyboxList[skyIndex]);
-      material.needsUpdate = true;
+      loadTexture();
     }
   });
 
@@ -105,10 +80,10 @@ function init() {
     if (skyIndex < skyboxList.length - 1)
     {
       ++skyIndex;
-      material.map = new THREE.TextureLoader().load( skyboxList[skyIndex]);
-      material.needsUpdate = true;
+      loadTexture();
     }
   });
+  // ============================================================================
 
   const toggleMotion = document.getElementById("toggle-motion");
   toggleMotion.addEventListener('click', promptGrant);
@@ -119,15 +94,30 @@ function init() {
       motionOff();
   });
 
+} // init
+
+function loadTexture()
+{
+  new THREE.TextureLoader().load( skyboxList[skyIndex], function ( texture ) {
+
+    texture.mapping = THREE.EquirectangularReflectionMapping;
+    texture.colorSpace = THREE.SRGBColorSpace;
+
+    const pmremGenerator = new THREE.PMREMGenerator( renderer );
+    pmremGenerator.compileEquirectangularShader();
+    const pngCubeRenderTarget = pmremGenerator.fromEquirectangular( texture );
+    scene.background = texture;
+    scene.environment = pngCubeRenderTarget.texture;
+
+    textDisplay3D.updateEnvironmentMap(pngCubeRenderTarget.texture);
+  } );
 }
 
 function onWindowResize() 
 {
-
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize( window.innerWidth, window.innerHeight );
-
 }
 
 function onPointerDown( event ) 
@@ -241,5 +231,6 @@ function update() {
 
     camera.lookAt( x, y, z );
   }
+  textDisplay3D.refreshText();
   renderer.render( scene, camera );
 }
