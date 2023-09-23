@@ -15,7 +15,7 @@
             background: linear-gradient(to bottom, #302e32, #212723);
             background-size:cover;        
             font-family: 'Cutive Mono', monospace;
-            height: cover
+            height: cover;
         }
 
         .center-container {
@@ -24,6 +24,9 @@
             align-items: center;
             padding-bottom: 5vh;
             height: 100vh;
+            transform-origin: center; 
+            justify-content: center;
+            align-items: center;
         }
 
         .h1 {
@@ -38,29 +41,30 @@
         p{
             margin: 0;
             padding: 0;
-            max-width: 50%;
-            text-align: center;
+            width: 60%;
+            max-width: 1080px;
         }
 
         input[type="text"] {
-            width: 30vw; 
+            width: 50%;
+            max-width: 1080px; 
             height: 2em;
             border-style: solid;
             border-width: .5px; 
             border-color: rgba(255, 255, 255,.5); 
             border-radius: 3px;
-            padding: 10px;
+            padding: 1rem;
             color: rgb(255, 255, 255); 
             text-align: center;
             background: rgba(255, 255, 255,.05); 
             font-family: 'Cutive Mono', monospace;
             font-weight: 100;
-            font-size: 1.2em;
+            font-size: 1.5rem;
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.25);
         }
 
         input[type="text"]::placeholder {
-            color: rgba(255, 255, 255,.6); 
+            color: rgba(255, 255, 255,.8); 
             text-align: center;
             font-weight: 100;
             font-style: italic;
@@ -75,12 +79,12 @@
         }
 
         .enterButton{
-            margin: 20px;
+            margin: 3.5rem;
             background-color:transparent;
             transition: background-color 0.5s;
             border: none;
             font-family: 'Cutive Mono', monospace;
-            font-size: 1.5em;
+            font-size: 2rem;
             color:rgb(255, 255, 255);
             mix-blend-mode: difference;
         }
@@ -105,7 +109,7 @@
 <body>
     <canvas id="canvas"></canvas>
     <div class="center-container">
-        <p class="h1">WHAT IF BIRTHDAY MEMORIES CAN BE FELT?</p>
+        <p class="h1">WHAT IF <br> BIRTHDAY<br>MEMORIES<br>CAN BE<br>FELT?</p>
         <input type="text" id="password" name="name" placeholder="Spell the magic...">
         <a href="birthdayWorlds.html">
             <button class="enterButton">Reveal</button>
