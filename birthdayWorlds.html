@@ -11,8 +11,8 @@
 
         #PreviousButton {
             position: absolute; 
-            bottom: 3.5rem;
-            left: 5vw;
+            bottom: 2%;
+            left: 25%;
             z-index: 1;
             background-color: transparent;
             height: 4rem;
@@ -35,8 +35,8 @@
 
         #NextButton {
             position: absolute; 
-            bottom: 3.55rem;
-            right: 5vw;
+            bottom: 2%;
+            right: 25%;
             z-index: 1;
             background-color: transparent;
             height: 4rem;
@@ -145,16 +145,21 @@
         .dropdown-content {
             display: none;
             position: absolute;
-            background-color: rgba(255, 255, 255, .2);
+            background-color: rgba(255, 255, 255, .1);
             min-width: 90px;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
             z-index: 1;
+            border: 1px solid #ffffff;
             border-radius: 3px;
+            border-width: 0.5px;
             list-style: none;
             padding: 0;
             transform: translate(0, 40%); 
             right: 0; 
             top: 0;
+            /* Add a box shadow to the dropdown menu */
+            box-shadow: 0px 2px 15px 0px rgba(0, 0, 0, 0.1);
+            z-index: 1;
 }
         
 
@@ -170,7 +175,8 @@
 
         /* Change color of links on hover */
         .dropdown-content a:hover {
-            background-color: rgba(0, 0, 0, .3);
+            background-color: rgba(0, 0, 0, .2);
+            border-radius: 3px;
         }
 
         /* Show the dropdown menu when the button is clicked */
