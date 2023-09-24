@@ -18,10 +18,15 @@ selectElement.style.paddingRight = "20px";
 selectElement.style.paddingTop = "3px";
 selectElement.style.paddingBottom = "3px"; 
 selectElement.style.fontFamily = "'Cutive Mono', monospace";
-selectElement.style.fontSize = "1.25em"
 selectElement.style.textShadow = "1px 1px 6px rgba(0, 0, 0, 0.3)";
 selectElement.style.outline = "none"; 
 selectElement.style.boxShadow = "inset 0px 0px 5px rgba(0, 0, 0, 0.1)";
+ // Responsive sizes
+ if (window.innerWidth <= 1000 && innerWidth/innerHeight < 1) {
+    selectElement.style.fontSize = "3em";
+} else {
+    selectElement.style.fontSize = "1.25em"
+}
 
 // Array 
 var number = ["1", "2", "3", "4", "5", "6"];
@@ -41,8 +46,12 @@ textElement.textContent = "/ 30";
 // Apply style to the text element
 textElement.style.paddingLeft = "10px"; 
 textElement.style.fontFamily = "'Cutive Mono', monospace";
-textElement.style.fontSize = "1.25em";
 textElement.style.textShadow = "1px 1px 10px rgba(0, 0, 0, 0.3)";
+if (window.innerWidth <= 1000 && innerWidth/innerHeight < 1 ) {
+    textElement.style.fontSize = "3em";
+} else {
+    textElement.style.fontSize = "1.25em";
+}
 
 // Append the select and text elements to the container
 container.appendChild(selectElement);
