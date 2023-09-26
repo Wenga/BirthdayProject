@@ -1,3 +1,4 @@
+let skyIndex = 0;
 // Get a reference to the container div
 var container = document.getElementById("selector-container");
 container.style.alignItems = "center";
@@ -28,20 +29,25 @@ selectElement.style.boxShadow = "inset 0px 0px 5px rgba(0, 0, 0, 0.1)";
     selectElement.style.fontSize = "1.25em"
 }
 
-// Array 
-var number = ["1", "2", "3", "4", "5", "6"];
+
+const totalSceneCount = SceneSetUp.getInstance().getSceneCount();
+const titles = SceneSetUp.getInstance().getSceneTitlesAll();
 
 // Create an option for each number and add it to the select element
-number.forEach(function (number) {
+titles.forEach(function (title) {
     var option = document.createElement("option");
-    option.value = number.toLowerCase();
-    option.textContent = number;
+    //option.value = number.toLowerCase();
+    option.textContent = title;
     selectElement.appendChild(option);
+});
+
+selectElement.addEventListener('change', function(){
+    skyIndex = selectElement.value - 1;
 });
 
 // Create a text element
 var textElement = document.createElement("span");
-textElement.textContent = "/ 30";
+textElement.textContent = "/ " + totalSceneCount.toString();
 
 // Apply style to the text element
 textElement.style.paddingLeft = "10px"; 
@@ -56,7 +62,6 @@ if (window.innerWidth <= 1000 && innerWidth/innerHeight < 1 ) {
 // Append the select and text elements to the container
 container.appendChild(selectElement);
 container.appendChild(textElement);
-
 
 
 // Menu
@@ -74,4 +79,22 @@ document.addEventListener("DOMContentLoaded", function() {
             dropdown.classList.remove("active");
         }
     });
+});
+
+const previousButton = document.getElementById('PreviousButton');
+const nextButton = document.getElementById('NextButton');
+previousButton.addEventListener('click', function() {
+  if (skyIndex > 0 )
+  {
+    --skyIndex;
+    selectElement.value = skyIndex + 1;
+  }
+});
+
+nextButton.addEventListener('click', function(){
+  if (skyIndex < totalSceneCount - 1)
+  {
+    ++skyIndex;
+    selectElement.value = skyIndex + 1;
+  }
 });

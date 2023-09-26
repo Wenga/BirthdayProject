@@ -1,6 +1,7 @@
 let camera, scene, renderer;
 let deviceOrientationControl;
 let textDisplay3D;
+const clock = new THREE.Clock();
 
 let isUserInteracting = false,
   onPointerDownMouseX = 0, onPointerDownMouseY = 0,
@@ -8,8 +9,11 @@ let isUserInteracting = false,
   lat = 0, onPointerDownLat = 0,
   phi = 0, theta = 0;
 
-const skyboxList = ['skybox1.png','skybox2.png']; 
-let skyIndex = 0;
+// debounce texture loading in case people spam buttons
+var previousSkyIndex = skyIndex;
+const THRESHOLD_LOAD = 1
+var thresholdChecker = 0
+
 let storedOrientation  = {
   initialzed : false, 
 };
@@ -34,7 +38,8 @@ function init() {
   renderer.setPixelRatio( window.devicePixelRatio );
   renderer.setSize( window.innerWidth, window.innerHeight );
 
-  loadTexture();
+  reloadScene();
+
   container.appendChild( renderer.domElement );
 
   container.style.touchAction = 'none';
@@ -63,28 +68,6 @@ function init() {
 
   window.addEventListener( 'resize', onWindowResize );
 
-  const previousButton = document.getElementById('PreviousButton');
-  const nextButton = document.getElementById('NextButton');
-
-  // === move those following bock to navigation and make it change selections ===
-  // I will listen to selection change and load the relative skybox.
-  previousButton.addEventListener('click', function() {
-    if (skyIndex > 0 )
-    {
-      --skyIndex;
-      loadTexture();
-    }
-  });
-
-  nextButton.addEventListener('click', function(){
-    if (skyIndex < skyboxList.length - 1)
-    {
-      ++skyIndex;
-      loadTexture();
-    }
-  });
-  // ============================================================================
-
   const toggleMotion = document.getElementById("toggle-motion");
   toggleMotion.addEventListener('click', promptGrant);
   toggleMotion.addEventListener('change', function(){
@@ -96,9 +79,9 @@ function init() {
 
 } // init
 
-function loadTexture()
+function loadTexture(texturePath)
 {
-  new THREE.TextureLoader().load( skyboxList[skyIndex], function ( texture ) {
+  new THREE.TextureLoader().load(texturePath, function ( texture ) {
 
     texture.mapping = THREE.EquirectangularReflectionMapping;
     texture.colorSpace = THREE.SRGBColorSpace;
@@ -108,7 +91,7 @@ function loadTexture()
     const pngCubeRenderTarget = pmremGenerator.fromEquirectangular( texture );
     scene.background = texture;
     scene.environment = pngCubeRenderTarget.texture;
-
+    scene.backgroundIntensity = 0;
     textDisplay3D.updateEnvironmentMap(pngCubeRenderTarget.texture);
   } );
 }
@@ -150,7 +133,6 @@ function onPointerMove( event )
 
 function onPointerUp( event ) 
 {
-
   if ( event.isPrimary === false ) return;
 
   isUserInteracting = false;
@@ -207,6 +189,28 @@ function motionOff()
   deviceOrientationControl.disconnect();
 }
 
+// there is an update on selected skyIndex, reset all the things needed.
+function reloadScene()
+{
+  const sceneDetail = SceneSetUp.getInstance().getSceneDetails(skyIndex);
+  textDisplay3D.updateText(sceneDetail.TextContent);
+  loadTexture(sceneDetail.SkyPath);
+}
+
+function checkSkyUpdate(deltaTime)
+{
+  thresholdChecker += deltaTime;
+  if (thresholdChecker > THRESHOLD_LOAD)
+  {
+    thresholdChecker = 0;
+  }
+  if (previousSkyIndex != skyIndex)
+  {
+    previousSkyIndex = skyIndex;
+    reloadScene();
+  }
+}
+
 function animate() 
 {
   requestAnimationFrame( animate );
@@ -231,6 +235,9 @@ function update() {
 
     camera.lookAt( x, y, z );
   }
+
+  const deltaTime = clock.getDelta();
+  checkSkyUpdate(deltaTime);
   textDisplay3D.refreshText();
   renderer.render( scene, camera );
 }

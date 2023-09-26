@@ -25,7 +25,7 @@ TextDisplay3D = function() {
         } );
 
         this.sceneGroup = new THREE.Group();
-        this.sceneGroup.position.z = -100;
+        this.sceneGroup.position.z = -200;
         scene.add( this.sceneGroup );
 	};
 
