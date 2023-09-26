@@ -85,13 +85,13 @@ TextDisplay3D = function() {
                 roughness: 0,
                 envMapIntensity: 1.2,
                 envMap:sky,
-                flatShading: true
+                flatShading: true,
             } ),
             new THREE.MeshStandardMaterial( {
                 metalness: 1,
                 roughness: 0,
                 envMapIntensity: 1.2,
-                envMap:sky
+                envMap:sky,
             } ),
         ];
         this.needUpdate = true;
