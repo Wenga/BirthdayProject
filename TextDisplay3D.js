@@ -11,7 +11,7 @@ TextDisplay3D = function() {
     this.needUpdate = false;
     this.materials = [
         new THREE.MeshStandardMaterial( { color: 0xffffff, flatShading: true, metalness:1, roughness:0} ), // front
-        new THREE.MeshStandardMaterial( { color: 0xffffff, metalness:1, roughness:0} ) // side
+        new THREE.MeshStandardMaterial( { color: 0xffffff, flatShading: true, metalness:1, roughness:0.5} ),  // side
     ];
 
 	this.init = function(scene) {
@@ -49,8 +49,8 @@ TextDisplay3D = function() {
             height: 2,
             curveSegments: 12,
             bevelEnabled: true,
-            bevelThickness: 1,
-            bevelSize:0.5,
+            bevelThickness: 0.5,
+            bevelSize:0.2,
             bevelOffset: 0,
             bevelSegments: 1
         } );
