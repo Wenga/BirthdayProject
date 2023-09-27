@@ -10,8 +10,8 @@ TextDisplay3D = function() {
     this.textMesh = null;
     this.needUpdate = false;
     this.materials = [
-        new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true, reflectivity:1 } ), // front
-        new THREE.MeshPhongMaterial( { color: 0xffffff, reflectivity:1 } ) // side
+        new THREE.MeshStandardMaterial( { color: 0xffffff, flatShading: true, metalness:1, roughness:0} ), // front
+        new THREE.MeshStandardMaterial( { color: 0xffffff, metalness:1, roughness:0} ) // side
     ];
 
 	this.init = function(scene) {
@@ -19,7 +19,7 @@ TextDisplay3D = function() {
         if (!this.fontLoader)
             this.fontLoader = new THREE.FontLoader();
 
-        this.fontLoader.load( 'optimer_bold.typeface.json', function ( font ) {
+        this.fontLoader.load( './Fonts/gentilis_regular.typeface.json', function ( font ) {
             scope.font = font;
             scope.needUpdate = true;
         } );
@@ -48,9 +48,9 @@ TextDisplay3D = function() {
             size: 16,
             height: 2,
             curveSegments: 12,
-            bevelEnabled: false,
+            bevelEnabled: true,
             bevelThickness: 1,
-            bevelSize:0,
+            bevelSize:0.5,
             bevelOffset: 0,
             bevelSegments: 1
         } );
@@ -79,21 +79,7 @@ TextDisplay3D = function() {
 
     this.updateEnvironmentMap = function(sky)
     {
-        this.materials = [
-            new THREE.MeshStandardMaterial( {
-                metalness: 1,
-                roughness: 0,
-                envMapIntensity: 1.2,
-                envMap:sky,
-                flatShading: true,
-            } ),
-            new THREE.MeshStandardMaterial( {
-                metalness: 1,
-                roughness: 0,
-                envMapIntensity: 1.2,
-                envMap:sky,
-            } ),
-        ];
-        this.needUpdate = true;
+        // automatic updated with standard material.
+        // override if choose to use cube texture
     }
 };
