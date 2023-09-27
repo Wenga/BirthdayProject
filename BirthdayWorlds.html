@@ -68,7 +68,6 @@
         }
 
         .switch {
-            position: absolute;
             display: inline-block;
             width: 80px; 
             height: 36px; 
@@ -85,10 +84,6 @@
             cursor: pointer;
             width: 60px; 
             height: 36px; 
-            top: 20px;
-            left: 10px;
-            right: 0;
-            bottom: 0;
             background-color: rgba(255,255,255,.2);
             -webkit-transition: .4s;
             transition: .4s;
@@ -203,6 +198,28 @@
         .dropdown.active .dropdown-content {
             display: block;
         }
+
+        #audioButton {
+            background-color: rgba(0,0,0,.3);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-family: 'Cutive Mono', monospace;
+            display: inline-block;
+        }
+
+        .settingContainer{
+            position:absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+        }
+
+        #customIcon {
+            width: 40px; 
+            height: 40px; 
+        }
         
     </style>
 </head>
@@ -224,10 +241,6 @@
             </svg>
         </button>
         <div id="selector-container"></div>
-        <label class="switch">
-            <input type="checkbox" id="toggle-motion">
-            <span class="slider"></span>
-        </label>
         <div class="dropdown">
             <button class="dropbtn">Menu</button>
             <ul class="dropdown-content">
@@ -235,7 +248,40 @@
                 <li><a href="#">About</a></li>
             </ul>
         </div>
+        <div class="settingContainer">
+            <label class="switch">
+                <input type="checkbox" id="toggle-motion">
+                <span class="slider"></span>
+            </label>
+            <audio id="myAudio" autoplay loop>
+                <source src="audio1.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <button id="audioButton" >
+                <img src="audioIcon.png" alt="Audio Icon" id="customIcon">
+            </button>
+        </div>
     </div>
+
+    <script>
+        // Get a reference to the audio element and the button
+        var audio = document.getElementById("myAudio");
+        var audioButton = document.getElementById("audioButton");
+
+        // Add a click event listener to the button
+        audioButton.addEventListener("click", function() {
+            if (audio.paused) {
+                audio.play(); // Play the audio if it's paused
+                audioButton.style.backgroundImage = 'audioIcon.png';
+                audioButton.style.opacity = 1;
+            } else {
+                audio.pause(); // Pause the audio if it's playing
+                audioButton.style.backgroundImage = 'audioIcon.png';
+                audioButton.style.opacity = 0.5;
+            }
+        });
+    </script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="SceneSetUp.js"></script>
     <script src="Navigation.js"></script>
