@@ -1,52 +1,52 @@
 function separateGroups( bufGeom ) {
 
-	var outGeometries = [];
+  var outGeometries = [];
 
-	var groups = bufGeom.groups;
+  var groups = bufGeom.groups;
 
-	var origVerts = bufGeom.getAttribute( 'position' ).array;
-	var origNormals = bufGeom.getAttribute( 'normal' ).array;
+  var origVerts = bufGeom.getAttribute( 'position' ).array;
+  var origNormals = bufGeom.getAttribute( 'normal' ).array;
     var origNormals = bufGeom.getAttribute( 'uv' ).array;
-	var origNumVerts = Math.floor( origVerts.length / 3 );
+  var origNumVerts = Math.floor( origVerts.length / 3 );
 
-	for ( var ig = 0, ng = groups.length; ig < ng; ig ++ ) {
+  for ( var ig = 0, ng = groups.length; ig < ng; ig ++ ) {
 
-		var group = groups[ ig ];
+    var group = groups[ ig ];
 
-		var destNumVerts = group.count;
+    var destNumVerts = group.count;
 
-		var newBufGeom = new THREE.BufferGeometry();
-		var newPositions = new Float32Array( destNumVerts * 3 );
-		var newNormals = new Float32Array( destNumVerts * 3 );
+    var newBufGeom = new THREE.BufferGeometry();
+    var newPositions = new Float32Array( destNumVerts * 3 );
+    var newNormals = new Float32Array( destNumVerts * 3 );
         var newUVs = new Float32Array( destNumVerts * 3 );
 
-		for ( var iv = 0; iv < destNumVerts; iv ++ ) {
+    for ( var iv = 0; iv < destNumVerts; iv ++ ) {
 
-			var indexOrig = 3 * ( group.start + iv );
-			var indexDest = 3 * iv;
+      var indexOrig = 3 * ( group.start + iv );
+      var indexDest = 3 * iv;
 
-			newPositions[ indexDest ] = origVerts[ indexOrig ];
-			newPositions[ indexDest + 1 ] = origVerts[ indexOrig + 1 ];
-			newPositions[ indexDest + 2 ] = origVerts[ indexOrig + 2 ];
+      newPositions[ indexDest ] = origVerts[ indexOrig ];
+      newPositions[ indexDest + 1 ] = origVerts[ indexOrig + 1 ];
+      newPositions[ indexDest + 2 ] = origVerts[ indexOrig + 2 ];
 
-			newNormals[ indexDest ] = origNormals[ indexOrig ];
-			newNormals[ indexDest + 1 ] = origNormals[ indexOrig + 1 ];
-			newNormals[ indexDest + 2 ] = origNormals[ indexOrig + 2 ];
+      newNormals[ indexDest ] = origNormals[ indexOrig ];
+      newNormals[ indexDest + 1 ] = origNormals[ indexOrig + 1 ];
+      newNormals[ indexDest + 2 ] = origNormals[ indexOrig + 2 ];
 
             newUVs[ indexDest ] = origNormals[ indexOrig ];
-			newUVs[ indexDest + 1 ] = origNormals[ indexOrig + 1 ];
-			newUVs[ indexDest + 2 ] = origNormals[ indexOrig + 2 ];
+      newUVs[ indexDest + 1 ] = origNormals[ indexOrig + 1 ];
+      newUVs[ indexDest + 2 ] = origNormals[ indexOrig + 2 ];
 
-		}
+    }
 
-		newBufGeom.setAttribute( 'position', new THREE.Float32BufferAttribute( newPositions, 3 ) );
-		newBufGeom.setAttribute( 'normal', new THREE.Float32BufferAttribute( newNormals, 3 ) );
+    newBufGeom.setAttribute( 'position', new THREE.Float32BufferAttribute( newPositions, 3 ) );
+    newBufGeom.setAttribute( 'normal', new THREE.Float32BufferAttribute( newNormals, 3 ) );
         newBufGeom.setAttribute( 'uv', new THREE.Float32BufferAttribute( newUVs, 3 ) );
-		outGeometries.push( newBufGeom );
+    outGeometries.push( newBufGeom );
 
-	}
+  }
 
-	return outGeometries;
+  return outGeometries;
 
 }
 
@@ -66,7 +66,7 @@ void main() {
 
 TextDisplay3D = function() {
 
-	var scope = this;
+  var scope = this;
 
     this.fontLoader = null;
     this.font = null;
@@ -83,7 +83,7 @@ TextDisplay3D = function() {
         new THREE.MeshStandardMaterial( { color: 0xffffff, flatShading: true, metalness:1, roughness:0.5} ),  // side
     ];
 
-	this.init = function(scene) {
+  this.init = function(scene) {
 
         if (!this.fontLoader)
             this.fontLoader = new THREE.FontLoader();
@@ -96,7 +96,7 @@ TextDisplay3D = function() {
         this.sceneGroup = new THREE.Group();
         this.sceneGroup.position.z = -200;
         scene.add( this.sceneGroup );
-	};
+  };
 
     this.refreshText = function(t) 
     {
