@@ -14,8 +14,9 @@ var previousSkyIndex = skyIndex;
 const THRESHOLD_LOAD = 1
 var thresholdChecker = 0
 
-let storedOrientation  = {
+let phoneMotionState  = {
   initialzed : false, 
+  enabled : false,
 };
 
 
@@ -68,13 +69,17 @@ function init() {
 
   window.addEventListener( 'resize', onWindowResize );
 
-  const toggleMotion = document.getElementById("toggle-motion");
-  toggleMotion.addEventListener('click', promptGrant);
-  toggleMotion.addEventListener('change', function(){
-    if(this.checked)
-      motionOn();
-    else
-      motionOff();
+  const toggleMotionButton = document.getElementById("toggle-motion");
+  toggleMotionButton.addEventListener('click', function(){
+      togglePhoneMotion();
+      if (phoneMotionState.enabled)
+      {
+        toggleMotionButton.style.opacity = 1;
+      }
+      else
+      {
+        toggleMotionButton.style.opacity = 0.5;
+      }
   });
 
 } // init
@@ -150,7 +155,7 @@ function onDocumentMouseWheel( event )
 
 function promptGrant()
 {
-  if (storedOrientation.initialzed)
+  if (phoneMotionState.initialzed)
     return;
 
   if (typeof DeviceOrientationEvent.requestPermission === 'function') {
@@ -160,8 +165,8 @@ function promptGrant()
         console.log(state)
         if (state === 'granted') {
           deviceOrientationControl = new DeviceOrientationControls(camera);
-          storedOrientation.initialzed = true;
-          motionOn();
+          phoneMotionState.initialzed = true;
+          setPhoneMotion(true);
         } else {
           console.error('Request to access the orientation was rejected');
         }
@@ -170,23 +175,40 @@ function promptGrant()
   } else {
     // Handle regular non iOS 13+ devices.
     deviceOrientationControl = new DeviceOrientationControls(camera);
-    storedOrientation.initialzed = true;
-    motionOn();
+    phoneMotionState.initialzed = true;
+    setPhoneMotion(true);
   }
 }
 
-function motionOn()
+function setPhoneMotion(value)
 {
-  if (storedOrientation.initialzed)
+  if (!phoneMotionState.initialzed)
   {
-    deviceOrientationControl.connect();
     return;
   }
+
+  if (value != phoneMotionState.enabled)
+  {
+    phoneMotionState.enabled = value;
+    if (value)
+    {
+      console.log("on")
+      deviceOrientationControl.connect();
+    }
+    else
+    {
+      console.log("off")
+      deviceOrientationControl.disconnect();
+    }
+  }
 }
 
-function motionOff()
+function togglePhoneMotion()
 {
-  deviceOrientationControl.disconnect();
+  if (!phoneMotionState.initialzed)
+    promptGrant();
+  else
+    setPhoneMotion(!phoneMotionState.enabled);
 }
 
 // there is an update on selected skyIndex, reset all the things needed.
@@ -219,7 +241,7 @@ function animate()
 
 function update() {
 
-  if ( isUserInteracting === false && storedOrientation.initialzed) 
+  if ( isUserInteracting === false && phoneMotionState.initialzed) 
   {
       deviceOrientationControl.update();
   }
