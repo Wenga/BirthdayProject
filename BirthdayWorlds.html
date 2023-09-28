@@ -150,22 +150,22 @@
         }
 
         #audioButton {
-            background-color: rgba(0,0,0,.3);
             color: #fff;
             border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            font-family: 'Cutive Mono', monospace;
             display: inline-block;
+            filter: drop-shadow(1px 1px 6px rgba(0, 0, 0, 0.5));
+            background-color: transparent;
+            cursor: pointer;
         }
 
         #toggle-motion {
-            background-color: rgba(0,0,0,.3);
             color: #fff;
             border: none;
-            cursor: pointer;
             display: inline-block;
+            filter: drop-shadow(1px 1px 6px rgba(0, 0, 0, 0.5));
+            background-color: transparent;
             opacity: 0.5;
+            cursor: pointer;
         }
 
         .settingContainer{
@@ -178,6 +178,7 @@
         #customIcon {
             width: 40px; 
             height: 40px; 
+            background-color: transparent;
         }
         
     </style>
@@ -211,8 +212,8 @@
             <button id="toggle-motion">
                 <img id="customIcon" src="./Textures/phoneIcon.png">
             </button>
-            <audio id="myAudio" autoplay loop muted>
-                <source src="./AudioFiles/audio1.mp3" type="audio/mpeg">
+            <audio id="myAudio" autoplay loop >
+                <source src="./AudioFiles/audio1.mp3" type="audio/mp3">
                 Your browser does not support the audio element.
             </audio>
             <button id="audioButton" >
