@@ -260,6 +260,6 @@ function update() {
 
   const deltaTime = clock.getDelta();
   checkSkyUpdate(deltaTime);
-  textDisplay3D.refreshText();
+  textDisplay3D.refreshText(clock.getElapsedTime());
   renderer.render( scene, camera );
 }
