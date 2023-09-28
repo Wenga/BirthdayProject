@@ -2,7 +2,7 @@
 var audio = document.getElementById("myAudio");
 var audioButton = document.getElementById("audioButton");
 
-// Add a click event listener to the button
+//Add a click event listener to the button
 audioButton.addEventListener("click", function() {
     if (audio.paused) {
         audio.play(); // Play the audio if it's paused
