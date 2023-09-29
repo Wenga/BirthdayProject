@@ -6,7 +6,7 @@ function separateGroups( bufGeom ) {
 
   var origVerts = bufGeom.getAttribute( 'position' ).array;
   var origNormals = bufGeom.getAttribute( 'normal' ).array;
-    var origNormals = bufGeom.getAttribute( 'uv' ).array;
+  var origNormals = bufGeom.getAttribute( 'uv' ).array;
   var origNumVerts = Math.floor( origVerts.length / 3 );
 
   for ( var ig = 0, ng = groups.length; ig < ng; ig ++ ) {
@@ -33,7 +33,7 @@ function separateGroups( bufGeom ) {
       newNormals[ indexDest + 1 ] = origNormals[ indexOrig + 1 ];
       newNormals[ indexDest + 2 ] = origNormals[ indexOrig + 2 ];
 
-            newUVs[ indexDest ] = origNormals[ indexOrig ];
+      newUVs[ indexDest ] = origNormals[ indexOrig ];
       newUVs[ indexDest + 1 ] = origNormals[ indexOrig + 1 ];
       newUVs[ indexDest + 2 ] = origNormals[ indexOrig + 2 ];
 
@@ -48,6 +48,32 @@ function separateGroups( bufGeom ) {
 
   return outGeometries;
 
+}
+
+var logged = false;
+
+function fx(center,group, x, y, z)
+{
+    // const aabb = new THREE.Box3();
+    // aabb.setFromObject(group);
+    // var center = new THREE.Vector3();
+    // aabb.getCenter(center);
+    for (var i = 0; i < group.children.length; ++i)
+    {
+        group.children[i].translateX(-center.x);
+        group.children[i].translateY(-center.y);
+        group.children[i].translateZ(-center.z - 200); 
+    }   
+    const re = new THREE.Euler(x, y, z, 'XYZ' );
+    var quat = new THREE.Quaternion().setFromEuler(re);
+    group.applyQuaternion(quat);
+ 
+    for (var i = 0; i < group.children.length; ++i)
+    {
+        group.children[i].translateX(center.x);
+        group.children[i].translateY(center.y);
+        group.children[i].translateZ(center.z + 200); 
+    } 
 }
 
 // in case we choose to use custom shaders in the end
@@ -80,7 +106,7 @@ TextDisplay3D = function() {
             vertexShader: vertexShader
           }),
         //new THREE.MeshStandardMaterial( { color: 0xffffff, flatShading: true, metalness:1, roughness:0} ), // front
-        new THREE.MeshStandardMaterial( { color: 0xffffff, flatShading: true, metalness:1, roughness:0.5} ),  // side
+        new THREE.MeshStandardMaterial( { color: 0xffffff, flatShading: true, metalness:1, roughness:0} ),  // side
     ];
 
   this.init = function(scene) {
@@ -94,7 +120,6 @@ TextDisplay3D = function() {
         } );
 
         this.sceneGroup = new THREE.Group();
-        this.sceneGroup.position.z = -200;
         scene.add( this.sceneGroup );
   };
 
@@ -109,7 +134,7 @@ TextDisplay3D = function() {
             return;
 
         this.needUpdate = false;
-        for (var i = this.sceneGroup.length - 1; i >= 0; i--) {
+        for (var i = this.sceneGroup.children.length - 1; i >= 0; i--) {
             this.sceneGroup.remove(this.sceneGroup.children[i]);
         }
         this.createText();
@@ -132,19 +157,26 @@ TextDisplay3D = function() {
         fontGeometry.computeBoundingBox();
         const centerOffset = - 0.5 * ( fontGeometry.boundingBox.max.x - fontGeometry.boundingBox.min.x );
 
-        console.log(fontGeometry);
         const processedGeo = separateGroups(fontGeometry);
-        for(var i = 0; i < processedGeo.length; ++i)
+        this.textMeshes = [];
+        const glyphCount = processedGeo.length / 2;
+        for(var i = 0; i < glyphCount; ++i)
         {
-            processedGeo[i].computeBoundingBox();
-            this.textMeshes.push(new THREE.Mesh( processedGeo[i], this.materials[0]));
-            this.sceneGroup.add(this.textMeshes[i]);
-            this.textMeshes[i].position.x = 0
-            this.textMeshes[i].position.y = 0;
-            this.textMeshes[i].position.z = 0;
-    
-            this.textMeshes[i].rotation.x = 0;
-            this.textMeshes[i].rotation.y = Math.PI * 2;
+            var glyphFace = processedGeo[2 * i];
+            var bevelEdge = processedGeo[2 * i + 1];
+            glyphFace.computeBoundingBox();
+            bevelEdge.computeBoundingBox();
+            var glyphGroup = new THREE.Group();
+            glyphGroup.add(new THREE.Mesh(glyphFace, this.materials[1]));
+            glyphGroup.add(new THREE.Mesh(bevelEdge, this.materials[1]));
+            glyphGroup.position.z = -200;
+            const aabb = new THREE.Box3();
+            aabb.setFromObject(glyphGroup);
+            var center = new THREE.Vector3();
+            aabb.getCenter(center);
+            this.textMeshes.push({group : glyphGroup, pos : center});
+            this.sceneGroup.add(glyphGroup);
+            glyphGroup.rotation.y = Math.PI * 2;
         }
     }
 
@@ -163,15 +195,14 @@ TextDisplay3D = function() {
 
     this.animateGeo = function(elapsedTime)
     {
-        const glyphCount = this.textMeshes.length / 2;
+
+        const glyphCount = this.textMeshes.length;
         for(var i = 0; i < glyphCount ; ++i)
         {
-            const rx = Math.random() * 0.02;
-            const ry = Math.random() * 0.02;
-            this.textMeshes[i].rotation.x += rx;
-            this.textMeshes[i].rotation.y += ry;
-            this.textMeshes[i + glyphCount].rotation.x += rx;
-            this.textMeshes[i + glyphCount].rotation.y += ry;
+            const rx = Math.PI * 0.005;
+            const ry = Math.PI * 0.003;
+            //fx(this.textMeshes[i].pos, this.textMeshes[i].group, rx, ry, 0);
+            this.textMeshes[i].group.translateY(0.1 * Math.sin(elapsedTime + i));
         }
     }
 };
