@@ -7,12 +7,11 @@
 // JavaScript to close the overlay with a fade-out effect when the "Close Overlay" button is clicked
     const closeOverlayButton = document.getElementById('closeOverlayButton');
     closeOverlayButton.addEventListener('click', () => {
+        const audio = document.getElementById('myAudio');
+        audio.play();
         const overlay = document.getElementById('overlay');
         overlay.classList.add('overlay-hidden'); // Apply the hidden class with opacity: 0
         setTimeout(function () {
-            // Play the audio when the overlay is closed
-            const audio = document.getElementById('myAudio');
-            audio.play();
             overlay.remove();
         }, 2000);
     });
