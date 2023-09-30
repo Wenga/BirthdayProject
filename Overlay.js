@@ -10,6 +10,9 @@
         const overlay = document.getElementById('overlay');
         overlay.classList.add('overlay-hidden'); // Apply the hidden class with opacity: 0
         setTimeout(function () {
+            // Play the audio when the overlay is closed
+            const audio = document.getElementById('myAudio');
+            audio.play();
             overlay.remove();
         }, 2000);
     });
