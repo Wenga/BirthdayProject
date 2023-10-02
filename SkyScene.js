@@ -57,7 +57,7 @@ function init() {
 
   document.addEventListener( 'dragenter', function () {
 
-    document.body.style.opacity = 0.5;
+    document.body.style.opacity = 1;
 
   } );
 
@@ -260,6 +260,6 @@ function update() {
 
   const deltaTime = clock.getDelta();
   checkSkyUpdate(deltaTime);
-  textDisplay3D.refreshText(clock.getElapsedTime());
+  textDisplay3D.refreshText(clock.getElapsedTime(), camera);
   renderer.render( scene, camera );
 }
