@@ -4,7 +4,7 @@ var SceneSetUp = (function(){
     {
         SelectorTitle:'1',
         SkyPath:'./Sky/skybox1.png',
-        TextContent:'some dummy text for sky1',
+        TextContent:'some dummy text\n for sky1',
     },
     {
         SelectorTitle:'2',

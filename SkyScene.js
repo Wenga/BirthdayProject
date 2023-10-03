@@ -19,6 +19,13 @@ let phoneMotionState  = {
   enabled : false,
 };
 
+var bgFade = {
+  delta : 0.2, // tween update delta per frame
+  t : 0.01,
+  target : 1,
+  shouldUpdate : false,
+}
+
 
 init();
 animate();
@@ -86,18 +93,35 @@ function init() {
 
 function loadTexture(texturePath)
 {
+  bgFade.target = 0;
+  bgFade.shouldUpdate = true;
   new THREE.TextureLoader().load(texturePath, function ( texture ) {
 
     texture.mapping = THREE.EquirectangularReflectionMapping;
     texture.colorSpace = THREE.SRGBColorSpace;
 
-    const pmremGenerator = new THREE.PMREMGenerator( renderer );
-    pmremGenerator.compileEquirectangularShader();
-    const pngCubeRenderTarget = pmremGenerator.fromEquirectangular( texture );
-    scene.background = texture;
-    scene.environment = pngCubeRenderTarget.texture;
-    scene.backgroundIntensity = 0;
-    textDisplay3D.updateEnvironmentMap(pngCubeRenderTarget.texture);
+    // const pmremGenerator = new THREE.PMREMGenerator( renderer );
+    // pmremGenerator.compileEquirectangularShader();
+    // const pngCubeRenderTarget = pmremGenerator.fromEquirectangular( texture );
+    // scene.background = texture;
+    // scene.environment = pngCubeRenderTarget.texture;
+    // use cube render target instead.
+
+    var currentRenderTarget = renderer.getRenderTarget();    
+    var renderTarget = new THREE.WebGLCubeRenderTarget( texture.image.height / 2);
+    renderTarget.fromEquirectangularTexture(renderer, texture );
+
+    renderer.setRenderTarget( currentRenderTarget );
+
+    var cubeTexture = renderTarget.texture;
+    cubeTexture.mapping = THREE.CubeReflectionMapping;
+    scene.background = cubeTexture;
+    scene.environment = cubeTexture;
+    scene.backgroundBlurriness = 0.5;
+
+    textDisplay3D.updateEnvironmentMap(cubeTexture);
+    bgFade.target = 1;
+    bgFade.shouldUpdate = true;
   } );
 }
 
@@ -192,12 +216,10 @@ function setPhoneMotion(value)
     phoneMotionState.enabled = value;
     if (value)
     {
-      console.log("on")
       deviceOrientationControl.connect();
     }
     else
     {
-      console.log("off")
       deviceOrientationControl.disconnect();
     }
   }
@@ -233,6 +255,24 @@ function checkSkyUpdate(deltaTime)
   }
 }
 
+function fadeBackground()
+{
+  if (bgFade.shouldUpdate)
+  {
+    if (Math.abs(bgFade.target - document.body.style.opacity) < bgFade.t)
+    {
+      bgFade.shouldUpdate = false;
+      renderer.domElement.style.opacity = bgFade.target;
+    }
+    else
+    {
+      const po = Number(renderer.domElement.style.opacity);
+      const cp = po + bgFade.delta * (bgFade.target - po);
+      renderer.domElement.style.opacity = cp;
+    }
+  }
+}
+
 function animate() 
 {
   requestAnimationFrame( animate );
@@ -262,4 +302,5 @@ function update() {
   checkSkyUpdate(deltaTime);
   textDisplay3D.refreshText(clock.getElapsedTime(), camera);
   renderer.render( scene, camera );
+  fadeBackground();
 }
