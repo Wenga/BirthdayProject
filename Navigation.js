@@ -19,9 +19,9 @@ selectElement.style.paddingRight = "20px";
 selectElement.style.paddingTop = "3px";
 selectElement.style.paddingBottom = "3px"; 
 selectElement.style.fontFamily = "'Cutive Mono', monospace";
-selectElement.style.textShadow = "1px 1px 6px rgba(0, 0, 0, 0.3)";
+selectElement.style.textShadow = "0px 0px 2px rgba(0, 0, 0, 0.5)";
 selectElement.style.outline = "none"; 
-selectElement.style.boxShadow = "inset 0px 0px 5px rgba(0, 0, 0, 0.1)";
+selectElement.style.boxShadow = "inset 0px 0px 2px 0px rgba(0,0,0,0.3)";
  // Responsive sizes
  if (window.innerWidth <= 1000 && innerWidth/innerHeight < 1) {
     selectElement.style.fontSize = "3em";
@@ -52,7 +52,7 @@ textElement.textContent = "/ " + totalSceneCount.toString();
 // Apply style to the text element
 textElement.style.paddingLeft = "10px"; 
 textElement.style.fontFamily = "'Cutive Mono', monospace";
-textElement.style.textShadow = "1px 1px 10px rgba(0, 0, 0, 0.3)";
+textElement.style.textShadow = " 0px 0px 2px rgba(0, 0, 0, 0.5)";
 if (window.innerWidth <= 1000 && innerWidth/innerHeight < 1 ) {
     textElement.style.fontSize = "3em";
 } else {
