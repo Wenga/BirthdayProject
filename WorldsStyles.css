@@ -119,17 +119,22 @@ canvas {
     border-width: 0.5px;
     list-style: none;
     padding: 0;
-    transform: translate(0, 45%); 
+    transform: translate(0, 2rem); 
     right: 0; 
     top: 0;
     text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
     z-index: 1;
 }
 
+@media screen and (max-width: 1000px) and (max-aspect-ratio:1x) {
+    .dropdown-content {
+        transform: translate(0, 4rem); 
+    }
+}
 
 /* Links inside the dropdown */
 .dropdown-content a {
-    padding: 8px 10px;
+    padding: 0.5rem 0.75rem 0.5rem 0.75rem;
     text-decoration: none;
     display: block;
     color: #ffffff;
