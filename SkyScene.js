@@ -1,6 +1,7 @@
 let camera, scene, renderer;
 let deviceOrientationControl;
 let textDisplay3D;
+var ambientDecorator;
 const clock = new THREE.Clock();
 
 let isUserInteracting = false,
@@ -41,6 +42,9 @@ function init() {
   textDisplay3D = new TextDisplay3D();
   textDisplay3D.init(scene);
   textDisplay3D.updateText("Test");
+
+  ambientDecorator = new AmbientDecorator();
+  ambientDecorator.init(scene);
 
   renderer = new THREE.WebGLRenderer();
   renderer.setPixelRatio( window.devicePixelRatio );
@@ -301,6 +305,7 @@ function update() {
   const deltaTime = clock.getDelta();
   checkSkyUpdate(deltaTime);
   textDisplay3D.refreshText(clock.getElapsedTime(), camera);
+  ambientDecorator.updateAnimation();
   renderer.render( scene, camera );
   fadeBackground();
 }

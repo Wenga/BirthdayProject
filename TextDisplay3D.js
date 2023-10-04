@@ -67,6 +67,8 @@ void main() {
 }
 `;
 
+const ANIM_DELTA = 1. / 60;
+
 TextDisplay3D = function() {
 
   var scope = this;
@@ -78,6 +80,7 @@ TextDisplay3D = function() {
     this.textMeshes = [];
     this.needUpdate = false;
     this.isUpdating = false; // font geometry is being updated.
+    this._tLastUpdate = 0; // use to lock frame rate when using motion mode.
     this.materials = [
         new THREE.ShaderMaterial({
             fragmentShader: fragmentShader,
@@ -158,7 +161,7 @@ TextDisplay3D = function() {
             glyphGroup.add(mesh);
 
             glyphGroup.position.set(center.x, center.y, center.z);
-            glyphGroup.position.z += this.zOffset;
+            //glyphGroup.position.z += this.zOffset;
             glyphGroup.rotation.y = 0.;
             this.textMeshes.push({group : glyphGroup, posWorld : center});   
             this.sceneGroup.add(glyphGroup);
@@ -167,7 +170,9 @@ TextDisplay3D = function() {
         aabb.setFromObject(this.sceneGroup);
         aabb.getCenter(this.geoCenter);
         this.sceneGroup.position.x = -this.geoCenter.x;
+        this.sceneGroup.position.z = this.zOffset;
         this.geoCenter.x = 0;
+        this.geoCenter.z = this.zOffset;
         this.geoCenter.normalize().negate();
         this.isUpdating = false;
     }
@@ -189,26 +194,31 @@ TextDisplay3D = function() {
 
     this.animateGeo = function(elapsedTime, camera)
     {
+        if (elapsedTime - this._tLastUpdate < ANIM_DELTA)
+        {
+            return;
+        }
+        this._tLastUpdate = elapsedTime;
         const lookAt = new THREE.Vector3(0, 0, -1);
         camera.getWorldDirection(lookAt);
-        const delta = (lookAt.dot(this.geoCenter) + 1.)* 2.;
+        const delta = (lookAt.dot(this.geoCenter) + 1);
         const sqrtDelta = Math.sqrt(delta);
         const glyphCount = this.textMeshes.length;
         for(var i = 0; i < glyphCount ; ++i)
         {
-            const rx = 1.25 * elapsedTime + i;
-            const ry = 1.67 * elapsedTime + 0.192873 * i;
-            const rz = 1.48 * elapsedTime + 0.23864 * i;
+            const rx = 0.25 * (elapsedTime + i);
+            const ry = 0.67 * (elapsedTime + 0.192873 * i);
+            const rz = 0.48 * (elapsedTime + 0.23864 * i);
             const glyphGroup = this.textMeshes[i].group;
             const dx = sqrtDelta * 56. * Math.sin(elapsedTime + i);
             const dy = sqrtDelta * 60. * Math.sin(0.8236 * (elapsedTime + i));
-            const dz = sqrtDelta * 47. * Math.sin(0.4756 * (elapsedTime + 0.758 * i));
+            const dz = sqrtDelta * 47. * Math.sin(0.4756 * (elapsedTime + 0.758 * i));         
             glyphGroup.rotation.x = delta * rx;
             glyphGroup.rotation.y = delta * ry;
             glyphGroup.rotation.z = delta * rz;
             glyphGroup.position.x = this.textMeshes[i].posWorld.x + dx;
             glyphGroup.position.y = this.textMeshes[i].posWorld.y + dy;
-            glyphGroup.position.z = this.textMeshes[i].posWorld.z + this.zOffset + dz;
+            glyphGroup.position.z = this.textMeshes[i].posWorld.z + dz;
         }
     }
 
