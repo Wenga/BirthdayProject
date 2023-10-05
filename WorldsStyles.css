@@ -260,7 +260,7 @@ canvas {
 }
 
 
-#closeOverlayButton{
+#closeIntroButton{
     border: 1px solid rgba(255, 255, 255, 0.8);
     border-radius: 2px;
     background: transparent;
@@ -274,7 +274,7 @@ canvas {
     padding: 1rem;
 }
 
-#closeOverlayButton:hover {
+#closeIntroButton:hover {
     background-color: rgba(255, 255, 255, 0.7); 
     color: black;
     border-color: rgba(255, 255, 255, 0.5); 
@@ -282,7 +282,21 @@ canvas {
 }
 
 @media screen and (max-width: 1000px) and (max-aspect-ratio:1) {
-    #closeOverlayButton {
+    #closeIntroButton {
         font-size: 3rem;
     }
+}
+
+#closeOverlayButton{
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 2px;
+    background: transparent;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 1rem;
+    font-family: 'Cutive Mono', monospace;
+    cursor: pointer;
+    padding: 1rem;
 }
