@@ -5,11 +5,11 @@ var audioButton = document.getElementById("audioButton");
 //Add a click event listener to the button
 audioButton.addEventListener("click", function() {
     if (audio.paused) {
-        audio.play(); // Play the audio if it's paused
+        audio.play(); 
         audioButton.style.backgroundImage = './Textures/audioIcon.png';
         audioButton.style.opacity = 1;
     } else {
-        audio.pause(); // Pause the audio if it's playing
+        audio.pause(); 
         audioButton.style.backgroundImage = './Textures/audioIcon.png';
         audioButton.style.opacity = 0.5;
     }
@@ -23,13 +23,13 @@ audio.volume = 0;
 let volume = 0;
 const fadeInterval = setInterval(function () {
     if (volume < 1) {
-    volume += 0.03; // Adjust the increment for desired speed
+    volume += 0.03; 
       if (volume > 1) volume = 1; // Ensure volume doesn't go above 1
       audio.volume = volume;
     } else {
       clearInterval(fadeInterval);
     }
-  }, fadeInDuration / 30); // Divide duration by 20 for smoothness
+  }, fadeInDuration / 30); // Divide duration for smoothness
 }
 
 function fadeOutAudio() {
@@ -44,11 +44,10 @@ const fadeInterval = setInterval(function () {
           audio.currentTime = 0;
           fadeInAudio();
     }
-  }, fadeOutDuration / 30); // Divide duration by 20 for smoothness
+  }, fadeOutDuration / 30); // Divide duration for smoothness
 }
 
 audio.addEventListener('timeupdate', function () {
-  // Check if the audio has reached the end of the loop 
   if (audio.currentTime >= 17) { // Adjust the time as needed
     fadeOutAudio();
   }

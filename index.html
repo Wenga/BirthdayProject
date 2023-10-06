@@ -45,7 +45,7 @@
             max-width: 1080px;
         }
 
-        input[type="text"] {
+        input[type="password"] {
             width: 50%;
             max-width: 500px; 
             height: 2em;
@@ -63,18 +63,18 @@
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.25);
         }
 
-        input[type="text"]::placeholder {
+        input[type="password"]::placeholder {
             color: rgba(255, 255, 255,.8); 
             text-align: center;
             font-weight: 100;
             font-style: italic;
         }
 
-        input[type="text"]:focus {
+        input[type="password"]:focus {
             outline: none; 
         }
 
-        input[type="text"]:focus::placeholder {
+        input[type="password"]:focus::placeholder {
             color: transparent;
         }
 
@@ -110,10 +110,8 @@
     <canvas id="canvas"></canvas>
     <div class="center-container">
         <p class="h1">WHAT IF <br> BIRTHDAY<br>MEMORIES<br>CAN BE<br>FELT?</p>
-        <input type="text" id="password" name="name" placeholder="Spell the magic...">
-        <a href="BirthdayWorlds.html">
-            <button class="enterButton">Reveal</button>
-        </a>
+        <input type="password" id="password" name="password" placeholder="Spell the magic...">
+        <button class="enterButton" id="revealButton">Reveal</button>
     </div>
 
   
@@ -201,6 +199,24 @@
         }
         animate();
         init();
+
+        // Define the correct password
+        const correctPassword = "YourPasswordHere";
+
+        // Add an event listener to the "Reveal" button
+        document.getElementById("revealButton").addEventListener("click", function () {
+            // Get the value entered in the password input field
+            const enteredPassword = document.getElementById("password").value;
+
+            // Check if the entered password is correct
+            if (enteredPassword === correctPassword) {
+                // Redirect to the desired page if the password is correct
+                window.location.href = "BirthdayWorlds.html";
+            } else {
+                // Display an error message if the password is incorrect
+                alert("Incorrect magic word.");
+            }
+        });
 
     </script>
 </body>
