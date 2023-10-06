@@ -215,6 +215,7 @@ canvas {
     justify-content: center;
     z-index: 2;
     transition: opacity 2s ease; 
+    overflow: auto;
 }
 
 /* Modal Styles */
@@ -230,7 +231,6 @@ canvas {
     text-align: center;
     position: relative; 
     max-height: 100vh; 
-    overflow-y: auto; 
 }
 
 @media screen and (max-width: 1000px) and (max-aspect-ratio:1) {
@@ -244,7 +244,8 @@ canvas {
     font-family: 'Cutive Mono', monospace;
     font-size: 1.2rem;
     margin-bottom: 3rem;
-    line-height: 1.5em
+    line-height: 1.5em;
+    text-align:center;
 }
 
 @media screen and (max-width: 1000px) and (max-aspect-ratio:1) {
@@ -287,16 +288,80 @@ canvas {
     }
 }
 
-#closeOverlayButton{
+.popupOverlay{
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    height:50%;
+    width: 50%;
+    padding: 3rem;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8); 
+    border-radius:5px;
+    z-index: 2;
+    transition: opacity 2s ease; 
+    color: #fff;
+    overflow-y: auto; 
+}
+@media screen and (max-width: 1000px) and (max-aspect-ratio:1) {
+    .popupOverlay {
+        font-size: 3rem;
+        max-width: 80%;
+        max-height: 80%;
+    }
+}
+
+.closeOverlayButton{
     border: 1px solid rgba(255, 255, 255, 0.8);
     border-radius: 2px;
     background: transparent;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
     color: #fff;
     font-size: 1rem;
     font-family: 'Cutive Mono', monospace;
     cursor: pointer;
-    padding: 1rem;
+    width: 2rem; 
+    height: 2rem;
+}
+@media screen and (max-width: 1000px) and (max-aspect-ratio:1) {
+    .closeOverlayButton {
+        font-size: 3rem;
+        right: 0;
+        width: 4rem; 
+        height: 4rem; 
+    }
+}
+
+.overlayTitle{
+    color: #fff;
+    font-size: 1.7rem;
+    font-family: 'Cutive Mono', monospace;    
+    text-align: center;
+    margin: 0;
+}
+
+@media screen and (max-width: 1000px) and (max-aspect-ratio:1) {
+    .overlayTitle {
+        font-size: 3.7rem;
+    }
+}
+
+.overlayTopSection{
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    position: sticky;
+    top: 0;
+}
+
+.overlayContent{
+    position: absolute;
+    top: 10rem; 
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    z-index: 1;
 }

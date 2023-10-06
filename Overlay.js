@@ -16,23 +16,32 @@ closeIntroButton.addEventListener('click', () => {
     }, 2000);
 });
 
-// Get elements
+// Funtion and listeners to open & close About overlay
 const aboutButton = document.querySelector(".dropdown-content li:first-child a");
 const aboutOverlay = document.getElementById("about");
-const closeOverlayButton = document.getElementById("closeOverlayButton");
+const closeAboutButton = document.getElementById("closeAboutButton");
 
-// Function to open the overlay
-function openOverlay() {
+function openAboutOverlay() {
     aboutOverlay.style.display = "block";
 }
-
-// Function to close the overlay
-function closeOverlay() {
+function closeAboutOverlay() {
     aboutOverlay.style.display = "none";
 }
 
-// Event listener for opening the overlay
-aboutButton.addEventListener("click", openOverlay);
+aboutButton.addEventListener("click", openAboutOverlay);
+closeAboutButton.addEventListener("click", closeAboutOverlay);
 
-// Event listener for closing the overlay
-closeOverlayButton.addEventListener("click", closeOverlay);
+// Funtion and listeners to open & close Story overlay
+const storyButton = document.querySelector(".dropdown-content li:nth-child(2) a");
+const storyOverlay = document.getElementById("story");
+const closeStoryButton = document.getElementById("closeStoryButton")
+
+function openStoryOverlay() {
+    storyOverlay.style.display = "block";
+}
+function closeStoryOverlay(){
+    storyOverlay.style.display = "none";
+}
+
+storyButton.addEventListener("click", openStoryOverlay);
+closeStoryButton.addEventListener("click", closeStoryOverlay);
