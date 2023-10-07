@@ -5,6 +5,7 @@ var ambientDecorator;
 const clock = new THREE.Clock();
 
 let isUserInteracting = false,
+    isMenuOpen = false,
   onPointerDownMouseX = 0, onPointerDownMouseY = 0,
   lon = 0, onPointerDownLon = 0,
   lat = 0, onPointerDownLat = 0,
@@ -170,6 +171,7 @@ function onPointerDown( event )
 
   if ( event.isPrimary === false ) return;
 
+  if (isMenuOpen) return;
   isUserInteracting = true;
 
   onPointerDownMouseX = event.clientX;
@@ -205,6 +207,8 @@ function onPointerUp( event )
 
 function onDocumentMouseWheel( event ) 
 {
+  if  (isMenuOpen)
+    return;
   const fov = camera.fov + event.deltaY * 0.05;
   camera.fov = THREE.MathUtils.clamp( fov, 10, 75 );
   camera.updateProjectionMatrix();

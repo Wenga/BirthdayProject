@@ -20,12 +20,17 @@ closeIntroButton.addEventListener('click', () => {
 const aboutButton = document.querySelector(".dropdown-content li:first-child a");
 const aboutOverlay = document.getElementById("about");
 const closeAboutButton = document.getElementById("closeAboutButton");
+const rightMenu = document.getElementById("right-menu");
 
 function openAboutOverlay() {
     aboutOverlay.style.display = "block";
+    storyOverlay.style.display = "none";
+    rightMenu.classList.remove("active");
+    isMenuOpen = true;
 }
 function closeAboutOverlay() {
     aboutOverlay.style.display = "none";
+    isMenuOpen = false;
 }
 
 aboutButton.addEventListener("click", openAboutOverlay);
@@ -38,9 +43,13 @@ const closeStoryButton = document.getElementById("closeStoryButton")
 
 function openStoryOverlay() {
     storyOverlay.style.display = "block";
+    aboutOverlay.style.display = "none";
+    rightMenu.classList.remove("active");
+    isMenuOpen = true;
 }
 function closeStoryOverlay(){
     storyOverlay.style.display = "none";
+    isMenuOpen = false;
 }
 
 storyButton.addEventListener("click", openStoryOverlay);

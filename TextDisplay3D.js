@@ -86,7 +86,7 @@ TextDisplay3D = function() {
             fragmentShader: fragmentShader,
             vertexShader: vertexShader
           }),
-        new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true, reflectivity:0.7, fog:false, refractionRatios:0.28, specular:0xffab01, emissive: 0xffd977 }), // front
+        new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true, reflectivity:0.7, fog:false, refractionRatio:0.28, specular:0xffab01, emissive: 0xffd977 }), // front
         new THREE.MeshStandardMaterial( { color: 0xffffff, flatShading: true, metalness:0.8, roughness:0} ),  // side
     ];
     this.geoCenter = new THREE.Vector3(0, 0, -200).normalize()
