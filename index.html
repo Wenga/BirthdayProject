@@ -200,20 +200,16 @@
         animate();
         init();
 
-        // Define the correct password
-        const correctPassword = "YourPasswordHere";
-        const secretCode = 1009;
-
         // Add an event listener to the "Reveal" button
         document.getElementById("revealButton").addEventListener("click", function () {
             // Get the value entered in the password input field
             const enteredPassword = document.getElementById("password").value;
 
             // Check if the entered password is correct
-            if (enteredPassword === correctPassword) {
+            if (enteredPassword == 20231009) {
                 // Redirect to the desired page if the password is correct
                 window.location.href = "BirthdayWorlds.html";
-            } if(enteredPassword == 1009){
+            }else if(enteredPassword == 1009){
                 alert("I hope when you offer the world with your gentleness,the world can treat you in the same way, and I wish a happy birthday and unbirthday to you and me.")
             } 
             else {
