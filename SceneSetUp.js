@@ -4,7 +4,7 @@ var SceneSetUp = (function(){
     {
         SelectorTitle:'1',
         SkyPath:'./Sky/ACultCeremony.png',
-        TextContent:'一些假人 text\n for sky1',
+        TextContent:'My ideal birthday place for birthday: a cult’s ceremony ',
     },
     {
         SelectorTitle:'2',
