@@ -86,7 +86,7 @@ TextDisplay3D = function() {
             fragmentShader: fragmentShader,
             vertexShader: vertexShader
           }),
-        new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true, reflectivity:0.7, fog:false, refractionRatio:0.28, specular:0xffab01, emissive: 0xffd977 }), // front
+        new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true, reflectivity:1, fog:false, emissive: 0x000000 }), // front
         new THREE.MeshStandardMaterial( { color: 0xffffff, flatShading: true, metalness:0.8, roughness:0} ),  // side
     ];
     this.geoCenter = new THREE.Vector3(0, 0, -200).normalize()
@@ -204,6 +204,7 @@ TextDisplay3D = function() {
         const delta = (lookAt.dot(this.geoCenter) + 1);
         const sqrtDelta = Math.sqrt(delta);
         const glyphCount = this.textMeshes.length;
+        const csa = delta < 0.1 ? sqrtDelta * 3.162 : 1;
         for(var i = 0; i < glyphCount ; ++i)
         {
             const rx = 0.25 * (elapsedTime + i);
@@ -219,6 +220,9 @@ TextDisplay3D = function() {
             glyphGroup.position.x = this.textMeshes[i].posWorld.x + dx;
             glyphGroup.position.y = this.textMeshes[i].posWorld.y + dy;
             glyphGroup.position.z = this.textMeshes[i].posWorld.z + dz;
+            this.materials[1].emissive = new THREE.Color(1 - csa, 1 - csa, 1 - csa);
+            this.materials[1].reflectivity = csa;
+            this.materials[1].needsUpdate = true;
         }
     }
 

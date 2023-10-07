@@ -38,9 +38,9 @@ AmbientDecorator = function() {
         const particleMaterial = new THREE.PointsMaterial( { size: 0.8, color: 0xffffff, blending: THREE.AdditiveBlending, transparent: true, vertexColors:true, opacity:0.5 } );
         const particlesGeometry = new THREE.BufferGeometry();
         const particlesCount = 300;
-        const positions = [];//new Float32Array(particlesCount * 3);
-        const colors = [];//new Float32Array(particlesCount * 3);
-        const sizes = [];//new Float32Array(particlesCount);
+        const positions = [];
+        const colors = [];
+        const sizes = [];
 
         for (let i = 0; i < particlesCount; i++) {
             const r = Math.random() * 50. + 100;
@@ -48,12 +48,14 @@ AmbientDecorator = function() {
             vertex.delay = Date.now() + (0.1236 * i);
             vertex.rotationAxis = new THREE.Vector3(0, Math.random() * 2 - 1, Math.random() * 2 - 1)
             vertex.rotationAxis.normalize()
-            vertex.rotationSpeed = Math.random() * 0.01
+            vertex.rotationSpeed = Math.random() * 0.005
             this._vectors.push(vertex)
         
             positions.push(vertex.x, vertex.y, vertex.z)
             sizes.push(Math.random() * 0.1);
-            colors.push(Math.random(), Math.random(), Math.random());
+            colors.push(Math.random() * 0.2 + 0.2, 
+                        Math.random() * 0.2 + 0.2, 
+                        Math.random() * 0.2 + 0.2);
         }
 
         particlesGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
