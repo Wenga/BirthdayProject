@@ -18,7 +18,7 @@ selectElement.style.paddingLeft = "20px";
 selectElement.style.paddingRight = "20px";
 selectElement.style.paddingTop = "3px";
 selectElement.style.paddingBottom = "3px"; 
-selectElement.style.fontFamily = "'Cutive Mono', monospace";
+selectElement.style.fontFamily = "'Chivo Mono', monospace";
 selectElement.style.textShadow = "0px 0px 2px rgba(0, 0, 0, 0.5)";
 selectElement.style.outline = "none"; 
 selectElement.style.boxShadow = "inset 0px 0px 2px 0px rgba(0,0,0,0.3)";
@@ -51,7 +51,7 @@ textElement.textContent = "/ " + totalSceneCount.toString();
 
 // Apply style to the text element
 textElement.style.paddingLeft = "10px"; 
-textElement.style.fontFamily = "'Cutive Mono', monospace";
+textElement.style.fontFamily = "'Chivo Mono', monospace";
 textElement.style.textShadow = " 0px 0px 2px rgba(0, 0, 0, 0.5)";
 if (window.innerWidth <= 1000 && innerWidth/innerHeight < 1 ) {
     textElement.style.fontSize = "3em";
