@@ -99,34 +99,63 @@ function loadTexture(texturePath)
 {
   bgFade.target = 0;
   bgFade.shouldUpdate = true;
-  new THREE.TextureLoader().load(texturePath, function ( texture ) {
+  if (texturePath.endsWith('.hdr'))
+  {
+    new RGBELoader().load(texturePath, function ( texture, textureData )
+    {
+      var currentRenderTarget = renderer.getRenderTarget();    
+      var renderTarget = new THREE.WebGLCubeRenderTarget( texture.image.height / 2);
+      renderTarget.fromEquirectangularTexture(renderer, texture );
+  
+      renderer.setRenderTarget( currentRenderTarget );
+  
+      var cubeTexture = renderTarget.texture;
+      cubeTexture.mapping = THREE.CubeReflectionMapping;
+      scene.background = cubeTexture;
+      scene.environment = cubeTexture;
+      scene.backgroundBlurriness = 0.5;
+  
+      textDisplay3D.updateEnvironmentMap(cubeTexture);
+      bgFade.target = 1;
+      bgFade.shouldUpdate = true;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1;
 
-    texture.mapping = THREE.EquirectangularReflectionMapping;
-    texture.colorSpace = THREE.SRGBColorSpace;
+    });
+  }
+  else
+  {
+    new THREE.TextureLoader().load(texturePath, function ( texture ) {
 
-    // const pmremGenerator = new THREE.PMREMGenerator( renderer );
-    // pmremGenerator.compileEquirectangularShader();
-    // const pngCubeRenderTarget = pmremGenerator.fromEquirectangular( texture );
-    // scene.background = texture;
-    // scene.environment = pngCubeRenderTarget.texture;
-    // use cube render target instead.
+      texture.mapping = THREE.EquirectangularReflectionMapping;
+      texture.colorSpace = THREE.SRGBColorSpace;
+  
+      // const pmremGenerator = new THREE.PMREMGenerator( renderer );
+      // pmremGenerator.compileEquirectangularShader();
+      // const pngCubeRenderTarget = pmremGenerator.fromEquirectangular( texture );
+      // scene.background = texture;
+      // scene.environment = pngCubeRenderTarget.texture;
+      // use cube render target instead.
+  
+      var currentRenderTarget = renderer.getRenderTarget();    
+      var renderTarget = new THREE.WebGLCubeRenderTarget( texture.image.height / 2);
+      renderTarget.fromEquirectangularTexture(renderer, texture );
+  
+      renderer.setRenderTarget( currentRenderTarget );
+  
+      var cubeTexture = renderTarget.texture;
+      cubeTexture.mapping = THREE.CubeReflectionMapping;
+      scene.background = cubeTexture;
+      scene.environment = cubeTexture;
+      scene.backgroundBlurriness = 0.5;
+  
+      textDisplay3D.updateEnvironmentMap(cubeTexture);
+      bgFade.target = 1;
+      bgFade.shouldUpdate = true;
+    } );
+  }
 
-    var currentRenderTarget = renderer.getRenderTarget();    
-    var renderTarget = new THREE.WebGLCubeRenderTarget( texture.image.height / 2);
-    renderTarget.fromEquirectangularTexture(renderer, texture );
 
-    renderer.setRenderTarget( currentRenderTarget );
-
-    var cubeTexture = renderTarget.texture;
-    cubeTexture.mapping = THREE.CubeReflectionMapping;
-    scene.background = cubeTexture;
-    scene.environment = cubeTexture;
-    scene.backgroundBlurriness = 0.5;
-
-    textDisplay3D.updateEnvironmentMap(cubeTexture);
-    bgFade.target = 1;
-    bgFade.shouldUpdate = true;
-  } );
 }
 
 function onWindowResize() 

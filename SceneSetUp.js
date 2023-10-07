@@ -3,12 +3,12 @@ var SceneSetUp = (function(){
     const megaTable = [
     {
         SelectorTitle:'1',
-        SkyPath:'./Sky/ACultCeremony.png',
+        SkyPath:'./Sky/ACultCeremony.hdr',
         TextContent:'some dummy text\n for sky1',
     },
     {
         SelectorTitle:'2',
-        SkyPath:'./Sky/ACultCeremony2.png',
+        SkyPath:'./Sky/ACultCeremony.png',
         TextContent:'A cult\'s ceremony',
     }];
     function _SceneSetUp() 
