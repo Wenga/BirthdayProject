@@ -44,6 +44,10 @@ function init() {
   textDisplay3D.init(scene);
   textDisplay3D.updateText("Test");
 
+  textDisplayPlane = new TextDisplayPlane();
+  textDisplayPlane.init(scene);
+  textDisplayPlane.showText("Some extra information people provide.");
+
   ambientDecorator = new AmbientDecorator();
   ambientDecorator.init(scene);
 
