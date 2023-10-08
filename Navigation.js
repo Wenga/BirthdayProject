@@ -43,7 +43,14 @@ titles.forEach(function (title) {
 });
 
 selectElement.addEventListener('change', function(){
-    skyIndex = selectElement.value - 1;
+    if (skyIndex != selectElement.value - 1)
+    {
+        skyIndex = selectElement.value - 1;
+        const sceneDetail = SceneSetUp.getInstance().getSceneDetails(skyIndex);
+        audioSrc.src = sceneDetail.AudioPath;
+        audio.load();
+        audio.play();
+    }
 });
 
 // Create a text element
@@ -83,6 +90,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+var audioSrc = document.getElementById("audio-source");
 const previousButton = document.getElementById('PreviousButton');
 const nextButton = document.getElementById('NextButton');
 previousButton.addEventListener('click', function() {
@@ -90,6 +98,10 @@ previousButton.addEventListener('click', function() {
   {
     --skyIndex;
     selectElement.value = skyIndex + 1;
+    const sceneDetail = SceneSetUp.getInstance().getSceneDetails(skyIndex);
+    audioSrc.src = sceneDetail.AudioPath;
+    audio.load();
+    audio.play();
   }
 });
 
@@ -98,5 +110,9 @@ nextButton.addEventListener('click', function(){
   {
     ++skyIndex;
     selectElement.value = skyIndex + 1;
+    const sceneDetail = SceneSetUp.getInstance().getSceneDetails(skyIndex);
+    audioSrc.src = sceneDetail.AudioPath;
+    audio.load();
+    audio.play();
   }
 });
