@@ -94,25 +94,33 @@ var audioSrc = document.getElementById("audio-source");
 const previousButton = document.getElementById('PreviousButton');
 const nextButton = document.getElementById('NextButton');
 previousButton.addEventListener('click', function() {
-  if (skyIndex > 0 )
-  {
-    --skyIndex;
+    if (skyIndex > 0 )
+    {
+        --skyIndex;
+    }
+    else
+    {
+        skyIndex = totalSceneCount - 1;
+    }
     selectElement.value = skyIndex + 1;
     const sceneDetail = SceneSetUp.getInstance().getSceneDetails(skyIndex);
     audioSrc.src = sceneDetail.AudioPath;
     audio.load();
     audio.play();
-  }
 });
 
 nextButton.addEventListener('click', function(){
-  if (skyIndex < totalSceneCount - 1)
-  {
-    ++skyIndex;
+    if (skyIndex < totalSceneCount - 1)
+    {
+        ++skyIndex;
+    }
+    else
+    {
+        skyIndex = 0;
+    }
     selectElement.value = skyIndex + 1;
     const sceneDetail = SceneSetUp.getInstance().getSceneDetails(skyIndex);
     audioSrc.src = sceneDetail.AudioPath;
     audio.load();
     audio.play();
-  }
 });
