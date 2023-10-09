@@ -280,6 +280,8 @@ function reloadScene()
   const sceneDetail = SceneSetUp.getInstance().getSceneDetails(skyIndex);
   textDisplay3D.updateText(sceneDetail.TextContent);
   loadTexture(sceneDetail.SkyPath);
+  textDisplayPlane.showText(sceneDetail.Story);
+  textDisplay3D.updateColor(sceneDetail.TextColor3D);
 }
 
 function checkSkyUpdate(deltaTime)
@@ -342,6 +344,7 @@ function update() {
   const deltaTime = clock.getDelta();
   checkSkyUpdate(deltaTime);
   textDisplay3D.refreshText(clock.getElapsedTime(), camera);
+  textDisplayPlane.updateGeo(clock.getElapsedTime(), camera);
   ambientDecorator.updateAnimation();
   renderer.render( scene, camera );
   fadeBackground();

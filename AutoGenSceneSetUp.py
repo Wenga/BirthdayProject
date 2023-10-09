@@ -12,5 +12,7 @@ for r, fds, fs in os.walk('Sky'):
                 "  SelectorTitle:\"{}\",\n"\
                 "  SkyPath:\"./Sky/{}\",\n"\
                 "  AudioPath:\"./AudioFiles/{}.mp3\",\n"\
-                "  TextContent:\"{}\"\n"\
-                "}},".format(cnt, f, fid, sp))
+                "  TextContent:\"{}\",\n"\
+                "  Story:\"Story or details this person told {}\",\n"\
+                "  TextColor3D:new THREE.Color(1, 1, 1),\n"\
+                "}},".format(cnt, f, fid, sp, cnt))

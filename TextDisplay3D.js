@@ -91,6 +91,7 @@ TextDisplay3D = function() {
     ];
     this.geoCenter = new THREE.Vector3(0, 0, -200).normalize()
     this.zOffset = -300.;
+    this._color = new THREE.Color(1, 1, 1);
 
   this.init = function(scene) {
         scene.add(new THREE.AmbientLight(0xffffff));
@@ -192,6 +193,16 @@ TextDisplay3D = function() {
         this.materials[1].needsUpdate = true;
     }
 
+    this.updateColor = function(textColor)
+    {
+        if (textColor != this._color)
+        {
+            this._color = textColor;
+            this.materials[1].color = this._color;
+            this.materials[1].needsUpdate = true;
+        }
+    }
+
     this.animateGeo = function(elapsedTime, camera)
     {
         if (elapsedTime - this._tLastUpdate < ANIM_DELTA)
@@ -201,7 +212,7 @@ TextDisplay3D = function() {
         this._tLastUpdate = elapsedTime;
         const lookAt = new THREE.Vector3(0, 0, -1);
         camera.getWorldDirection(lookAt);
-        const delta = (lookAt.dot(this.geoCenter) + 1);
+        const delta = Math.max(0.0002, lookAt.dot(this.geoCenter) + 1);
         const sqrtDelta = Math.sqrt(delta);
         const glyphCount = this.textMeshes.length;
         const csa = delta < 0.1 ? sqrtDelta * 3.162 : 1;
@@ -220,7 +231,10 @@ TextDisplay3D = function() {
             glyphGroup.position.x = this.textMeshes[i].posWorld.x + dx;
             glyphGroup.position.y = this.textMeshes[i].posWorld.y + dy;
             glyphGroup.position.z = this.textMeshes[i].posWorld.z + dz;
-            this.materials[1].emissive = new THREE.Color(1 - csa, 1 - csa, 1 - csa);
+            this.materials[1].emissive = new THREE.Color(
+                Math.min(this._color.r - csa, 0), 
+                Math.min(this._color.g - csa, 0),
+                Math.min(this._color.b - csa, 0));
             this.materials[1].reflectivity = csa;
             this.materials[1].needsUpdate = true;
         }

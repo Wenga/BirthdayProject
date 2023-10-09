@@ -85,13 +85,15 @@ TextDisplayPlane = function() {
             );
             this.textMesh.position.set(0, 0, 100);
             this.textMesh.rotation.y = Math.PI;
+            this.sceneGroup.add(this.textMesh);
         }
-      
-        this.sceneGroup.add(this.textMesh);
     }
-  
-    this.updateText = function(text)
+    
+    this.updateGeo = function(et, camera)
     {
+        const lookAt = new THREE.Vector3(0, 0, -1);
+        camera.getWorldDirection(lookAt);
+        //const delta = (lookAt.dot(this.geoCenter) + 1);
     }
   
   };
