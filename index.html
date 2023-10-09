@@ -110,8 +110,8 @@
     <canvas id="canvas"></canvas>
     <div class="center-container">
         <p class="h1">WHAT IF <br> BIRTHDAY<br>MEMORIES<br>CAN BE<br>FELT?</p>
-        <input type="password" id="password" name="password" placeholder="Spell the magic...">
-        <!-- <input type="password" id="password" name="password" placeholder="Unlocked since October 2023..."> -->
+        <!-- <input type="password" id="password" name="password" placeholder="Spell the magic..."> -->
+        <input type="password" id="password" name="password" placeholder="Unlocked since October 2023...">
         <button class="enterButton" id="revealButton">Reveal</button>
     </div>
 
@@ -201,33 +201,33 @@
         animate();
         init();
 
-        // Reavel before unlock
-        document.getElementById("revealButton").addEventListener("click", function () {
-            // Get the value entered in the password input field
-            const enteredPassword = document.getElementById("password").value;
-
-            // Check if the entered password is correct
-            if (enteredPassword == 20231009) {
-                // Redirect to the desired page if the password is correct
-                window.location.href = "BirthdayWorlds.html";
-            }else if(enteredPassword == 1009){
-                alert("I hope when you offer the world with your gentleness,the world can treat you in the same way, and I wish a happy birthday and unbirthday to you and me.")
-            } 
-            else {
-                // Display an error message if the password is incorrect
-                alert("Not this magic word.");
-            }
-        });
-
-        // // Reavel after unlock
+        // // Reavel before unlock
         // document.getElementById("revealButton").addEventListener("click", function () {
-        // const enteredPassword = document.getElementById("password").value;
-        // if (enteredPassword == 1009) {
-        //     alert("I hope when you offer the world with your gentleness,the world can treat you in the same way, and I wish a happy birthday and unbirthday to you and me.")
-        // } else {
-        //     window.location.href = "BirthdayWorlds.html";
-        // }
-        // }); 
+        //     // Get the value entered in the password input field
+        //     const enteredPassword = document.getElementById("password").value;
+
+        //     // Check if the entered password is correct
+        //     if (enteredPassword == 20231009) {
+        //         // Redirect to the desired page if the password is correct
+        //         window.location.href = "BirthdayWorlds.html";
+        //     }else if(enteredPassword == 1009){
+        //         alert("I hope when you offer the world with your gentleness,the world can treat you in the same way, and I wish a happy birthday and unbirthday to you and me.")
+        //     } 
+        //     else {
+        //         // Display an error message if the password is incorrect
+        //         alert("Not this magic word.");
+        //     }
+        // });
+
+        // Reavel after unlock
+        document.getElementById("revealButton").addEventListener("click", function () {
+        const enteredPassword = document.getElementById("password").value;
+        if (enteredPassword == 1009) {
+            alert("I hope when you offer the world with your gentleness,the world can treat you in the same way, and I wish a happy birthday and unbirthday to you and me.")
+        } else {
+            window.location.href = "BirthdayWorlds.html";
+        }
+        }); 
 
 
 
