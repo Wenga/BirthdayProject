@@ -42,7 +42,7 @@ var SceneSetUp = (function(){
             TextColor3D:new THREE.Color(1, 1, 1),
         },
         {
-            SelectorTitle:"16",
+            SelectorTitle:"6",
             SkyPath:"./Sky/HomeWithFamily.png",
             AudioPath:"./AudioFiles/HomeWithFamily.mp3",
             TextContent:"Home With Family",
