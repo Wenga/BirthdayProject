@@ -86,7 +86,7 @@ var SceneSetUp = (function(){
             SkyPath:"./Sky/Africa.png",
             AudioPath:"./AudioFiles/Africa.mp3",
             TextContent:"Africa",
-            Story:"For my dream birthday cleebration, I hope to travel to Africa and experience the culture there. I wish I will be on a hot balloon in south Africa, being embraced by the beauty of nature, and being surrounded by people I love.\n From --Anonymous",
+            Story:"For my dream birthday cleebration, I hope to travel to Africa and experience the culture there. I wish I will be on a hot balloon in south Africa, being embraced by the beauty of nature, and being surrounded by people I love.\n --From Anonymous",
             TextColor3D:new THREE.Color(1, 1, 1),
         },
         {
