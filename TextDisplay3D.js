@@ -212,7 +212,7 @@ TextDisplay3D = function() {
         this._tLastUpdate = elapsedTime;
         const lookAt = new THREE.Vector3(0, 0, -1);
         camera.getWorldDirection(lookAt);
-        const delta = Math.max(0.0002, lookAt.dot(this.geoCenter) + 1);
+        const delta = Math.max(0.0002, lookAt.dot(this.geoCenter) + 0.98);
         const sqrtDelta = Math.sqrt(delta);
         const glyphCount = this.textMeshes.length;
         const csa = delta < 0.1 ? sqrtDelta * 3.162 : 1;
