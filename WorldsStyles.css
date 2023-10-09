@@ -129,7 +129,7 @@ canvas {
 
 @media screen and (max-width: 1000px) and (max-aspect-ratio:1x) {
     .dropdown-content {
-        transform: translate(0, 4.3rem); 
+        font-size: 3rem;
     }
 }
 
