@@ -1,19 +1,23 @@
 function getLines(ctx, text, maxWidth) {
-    var words = text.split(" ");
+    var indentedLines = text.split('\n');
     var lines = [];
-    var currentLine = words[0];
-
-    for (var i = 1; i < words.length; i++) {
-        var word = words[i];
-        var width = ctx.measureText(currentLine + " " + word).width;
-        if (width < maxWidth) {
-            currentLine += " " + word;
-        } else {
-            lines.push(currentLine);
-            currentLine = word;
+    for (var j = 0; j < indentedLines.length; j++)
+    {
+        var words = indentedLines[j].split(" ");
+        var currentLine = words[0];
+    
+        for (var i = 1; i < words.length; i++) {
+            var word = words[i];
+            var width = ctx.measureText(currentLine + " " + word).width;
+            if (width < maxWidth) {
+                currentLine += " " + word;
+            } else {
+                lines.push(currentLine);
+                currentLine = word;
+            }
         }
+        lines.push(currentLine);
     }
-    lines.push(currentLine);
     return lines;
 }
 
@@ -23,8 +27,11 @@ TextDisplayPlane = function() {
     this.displayText = "";
     this.textCanvas = null;
     this.needUpdate = false;
-    this._tLastUpdate = 0; // use to lock frame rate when using motion mode.
+    this._tLastNFocus = 0; // use to lock frame rate when using motion mode.
     this.mat = null;
+    this.hintMat = null;
+    this.hintCube = null;
+    this.geoCenter = new THREE.Vector3(0, 0, 100);
   
     this.init = function(scene) {
           this.sceneGroup = new THREE.Group();
@@ -49,8 +56,8 @@ TextDisplayPlane = function() {
         ctx.fillStyle = "rgba(255,255,255,1)";
 
         ctx.save();
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = "#f000000";
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = "#000000";
         
         for (let j = 0; j < lines.length; ++j)
         {
@@ -83,17 +90,74 @@ TextDisplayPlane = function() {
                 new THREE.PlaneGeometry(160, 120),
                 this.mat
             );
-            this.textMesh.position.set(0, 0, 100);
+            this.textMesh.position.set(0, -80, 0);
             this.textMesh.rotation.y = Math.PI;
             this.sceneGroup.add(this.textMesh);
+
+            const hintGeo = new THREE.BoxGeometry( 4, 4, 4 ); 
+            this.hintMat = new THREE.MeshStandardMaterial({color: 0xffffff, flatShading: true, metalness:0.9, emissive: 0x000000} ); 
+            this.hintCube = new THREE.Mesh( hintGeo, this.hintMat ); 
+            this.sceneGroup.add( this.hintCube );
         }
+        this.sceneGroup.position.set(0, 80, 100);
+        this.geoCenter = this.sceneGroup.position.clone();
+        this.geoCenter.add(this.textMesh.position);
+        this.geoCenter.normalize().negate();
+    }
+
+    this.updateEnvironmentMap = function(texture)
+    {
+        this.hintMat.needsUpdate = true;
     }
     
     this.updateGeo = function(et, camera)
     {
         const lookAt = new THREE.Vector3(0, 0, -1);
         camera.getWorldDirection(lookAt);
-        //const delta = (lookAt.dot(this.geoCenter) + 1);
+        const delta = (lookAt.dot(this.geoCenter) + 1);
+        const stareTime = 0.5;
+        const expandTime = 0.5;
+        this.hintCube.rotation.x = et;
+        this.hintCube.rotation.y = et;
+        if (delta > 0.1)
+        {
+            this._tLastNFocus = et;
+            // close
+            if (this.mat.opacity != 0.)
+            {
+                this.mat.opacity = 0.;
+                this.mat.needsUpdate = true;
+            }
+            const ec = this.hintMat.emissive;
+            if (ec.r != 0 || ec.g != 0 || ec.b != 0)
+            {
+                this.hintMat.emissive = new THREE.Color(0, 0, 0);
+                this.hintMat.needsUpdate = true;
+            }
+        }
+        else if(et - this._tLastNFocus < stareTime)
+        {
+            const p = (et - this._tLastNFocus)/stareTime;
+            this.hintMat.emissive = new THREE.Color(p, p, p);
+            this.hintMat.needsUpdate = true;
+        }
+        else if(et - this._tLastNFocus < stareTime + expandTime)
+        {
+            // staring
+            const p = (et - this._tLastNFocus - stareTime)/expandTime;
+
+            this.mat.opacity = p;
+            this.mat.needsUpdate = true;
+        }
+        else
+        {
+            if (this.mat.opacity != 1.)
+            {
+                this.mat.opacity = 1.;
+                this.mat.needsUpdate = true;
+            }
+            // reading
+        }
     }
   
   };

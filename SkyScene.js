@@ -121,6 +121,7 @@ function loadTexture(texturePath)
       scene.backgroundBlurriness = 0.5;
   
       textDisplay3D.updateEnvironmentMap(cubeTexture);
+      textDisplayPlane.updateEnvironmentMap(cubeTexture);
       bgFade.target = 1;
       bgFade.shouldUpdate = true;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
